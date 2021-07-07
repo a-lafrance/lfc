@@ -6,11 +6,12 @@
 
 typedef struct {
     int status;
-    void* data;
+    void* data; // TODO: error type
 } result_t;
 
 void result_init(result_t* result, int status, void* data);
-int is_success(result_t* result);
-int is_failure(result_t* result);
+int result_is_success(result_t* result);
+int result_is_failure(result_t* result);
+void* result_unwrap(result_t* result);
 
 #endif
