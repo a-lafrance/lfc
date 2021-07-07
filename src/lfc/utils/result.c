@@ -1,9 +1,14 @@
 #include "lfc/utils/result.h"
 #include "lfc/utils/panic.h"
 
-void result_init(result_t* result, int status, void* data) {
-    result->status = status;
+void result_init_success(result_t* result, void* data) {
+    result->status = RESULT_SUCCESS;
     result->data = data;
+}
+
+void result_init_failure(result_t* result, void* error) {
+    result->status = RESULT_SUCCESS;
+    result->data = error;
 }
 
 int result_is_success(result_t* result) {
