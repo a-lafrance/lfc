@@ -5,9 +5,16 @@ void option_init(option_t* option, void* data) {
     option->data = data;
 }
 
+option_t option_new(void* data) {
+    option_t option;
+    option_init(&option, data);
+
+    return option;
+}
+
 option_t option_null() {
     option_t option;
-    option->data = NULL;
+    option_init(&option, NULL);
 
     return option;
 }

@@ -17,16 +17,13 @@ void array_new(array_t* array);
 // Initialize the array with the given contents
 void array_init(array_t* array, void* data, size_t len);
 
-// Retrieve the value at the given index in the array
+// Retrieve a pointer to the value at the given index in the array
 // Panics if the index is out of bounds
 void* array_get(array_t* array, size_t index);
 
-// Set the value at the given index array
-// Panics if the index is out of bounds
-void array_set(array_t* array, size_t index, void* value);
-
 // Search the array for the given element
 // Returns the appropriate index if it exists, otherwise null
-option_t array_find(array_t* array, void* elem);
+// `elem_eq()` must return 1 if the two elements are equal, otherwise it must return 0
+option_t array_find(array_t* array, void* elem, int (*elem_eq)(void*, void*));
 
 #endif

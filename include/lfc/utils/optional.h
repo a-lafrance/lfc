@@ -8,7 +8,10 @@ typedef struct {
 // Initialize the optional with the given value
 void option_init(option_t* option, void* data);
 
-// Initialize a null value
+// Create a new fulfilled optional value
+option_t option_new(void* data);
+
+// Create a null value
 option_t option_null();
 
 // Determine whether or not the optional contains a value
