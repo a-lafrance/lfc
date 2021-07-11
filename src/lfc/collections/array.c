@@ -1,6 +1,4 @@
 #include "lfc/collections/array.h"
-
-#include "lfc/utils/optional.h"
 #include "lfc/utils/panic.h"
 
 #include <stdlib.h>

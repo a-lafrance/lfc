@@ -1,18 +1,16 @@
 #ifndef LFC_LINKEDLIST_HEADER
 #define LFC_LINKEDLIST_HEADER
 
-#include "lfc/utils/optional.h"
-
 #include <stdlib.h>
 
 struct ll_node {
-    option_t next;
+    struct ll_node* next;
     void* data;
 };
 
 typedef struct {
-    option_t head;
-    option_t tail;
+    struct ll_node* head;
+    struct ll_node* tail;
     size_t len;
 } list_t;
 
@@ -26,6 +24,9 @@ void ll_free(list_t* list, void (*elem_free)(void*));
 
 // Append an element to the tail of the linked list
 void ll_append(list_t* list, void* elem);
+
+// Prepend an element to the head of the linked list
+void ll_prepend(list_t* list, void* elem);
 
 // Search the linked list for the given value, returning its index if found
 size_t ll_find(list_t* list, void* target, void (*elem_eq)(void*, void*));

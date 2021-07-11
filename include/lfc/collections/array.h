@@ -3,8 +3,6 @@
 
 #include <stdlib.h>
 
-#include "lfc/utils/optional.h"
-
 // Fixed-size, checked array
 typedef struct {
     void* data;
