@@ -3,6 +3,9 @@
 
 #include <stdlib.h>
 
+// TODO: write something about like convention or whatever so people don't go crazy
+#define DEF_LINKEDLIST(T) // TODO: stick all that stuff in the generic macro definition
+
 struct ll_node {
     struct ll_node* next;
     void* data;
@@ -19,7 +22,6 @@ void ll_init(list_t* list);
 
 // Free the contents of the linked list, freeing each element according to the provided destructor
 // Note that the pointer to each element is not freed; the destructor must free it if necessary
-// FIXME: should i be using optionals here? probably
 void ll_free(list_t* list, void (*elem_free)(void*));
 
 // Append an element to the tail of the linked list
