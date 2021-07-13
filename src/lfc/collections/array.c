@@ -19,7 +19,7 @@ void array_free(array_t* array, void (*elem_free)(void*)) {
     if (elem_free != NULL) {
         for (int i = 0; i < array->len; i++) {
             void* elem = array_get(array, i);
-            (*elem_free)(elem)l;
+            (*elem_free)(elem);
         }
     }
 
@@ -31,7 +31,7 @@ void* array_get(array_t* array, size_t index) {
         panic(EXIT_FAILURE, "index %li out of bounds of array of length %li", index, array->len);
     }
 
-    return array->data + index * elem_size;
+    return array->data + index * array->elem_size;
 }
 
 size_t array_find(array_t* array, void* target, int (*elem_eq)(void*, void*)) {

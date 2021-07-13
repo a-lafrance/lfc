@@ -3,9 +3,6 @@
 
 #include <stdlib.h>
 
-// TODO: write something about like convention or whatever so people don't go crazy
-#define DEF_LINKEDLIST(T) // TODO: stick all that stuff in the generic macro definition
-
 struct ll_node {
     struct ll_node* next;
     void* data;
@@ -31,7 +28,7 @@ void ll_append(list_t* list, void* elem);
 void ll_prepend(list_t* list, void* elem);
 
 // Search the linked list for the given value, returning its index if found
-size_t ll_find(list_t* list, void* target, void (*elem_eq)(void*, void*));
+size_t ll_find(list_t* list, void* target, int (*elem_eq)(void*, void*));
 
 // TODO: functional stuff
 

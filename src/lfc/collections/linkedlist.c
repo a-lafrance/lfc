@@ -57,7 +57,7 @@ void ll_prepend(list_t* list, void* elem) {
     list->head = node;
 }
 
-size_t ll_find(list_t* list, void* target, void (*elem_eq)(void*, void*)) {
+size_t ll_find(list_t* list, void* target, int (*elem_eq)(void*, void*)) {
     size_t i = 0;
 
     for (struct ll_node* node = list->head; node != NULL; node = node->next) {

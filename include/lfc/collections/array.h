@@ -23,6 +23,10 @@ void array_free(array_t* array, void (*elem_free)(void*));
 // Panics if the index is out of bounds
 void* array_get(array_t* array, size_t index);
 
+// Set the value of the element at the given index in the array
+// Returns a pointer to the old value, in case it must be freed
+void* array_set(array_t* array, size_t index, void* data);
+
 // Search the array for the given element
 // Returns the appropriate index if it exists, otherwise null
 // `elem_eq()` must return 1 if the two elements are equal, otherwise it must return 0
