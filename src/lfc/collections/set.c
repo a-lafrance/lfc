@@ -46,7 +46,7 @@ void hashset_rehash(hashset_t* set) {
 
     // stick everything from old buckets to new
     for (size_t i = 0; i < old_buckets.len; i++) {
-        list_t* bucket = array_get(&old_buckets);
+        list_t* bucket = array_get(&old_buckets, i);
 
         while (!ll_is_empty(bucket)) {
             void* elem = ll_pop_first(bucket);
@@ -73,10 +73,10 @@ void hashset_insert(hashset_t* set, void* elem) {
     size_t bucket_index = hashset_bucket_index(set, elem);
 
     // find bucket
-    vec_t* bucket = vec_get(&set->buckets, bucket_index);
+    list_t* bucket = array_get(&set->buckets, bucket_index);
 
     // insert into bucket
-    vec_append(bucket, elem);
+    ll_append(bucket, elem);
     set->size += 1;
 }
 

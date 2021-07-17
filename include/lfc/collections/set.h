@@ -1,7 +1,7 @@
 #ifndef LFC_SET_HEADER
 #define LFC_SET_HEADER
 
-#include "lfc/collections/vec.h"
+#include "lfc/collections/array.h"
 
 #include <stdlib.h>
 

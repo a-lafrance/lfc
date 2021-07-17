@@ -1,9 +1,11 @@
 INCLUDE_DIR = include/lfc
 SRC_DIR = src/lfc
 TARGET_DIR = target
+TESTS_DIR = tests/src
 
 CC = clang
 CFLAGS = -c -I../include
+TESTS_CFLAGS = -I../include -I../tests/include -L. -llfc -o tests
 
 # TODO: audit this build stuff because what if globs are bad
 
@@ -11,6 +13,15 @@ liblfc:
 	$(MAKE) collections utils # build each part of the lib
 	ar -rc $(TARGET_DIR)/$@.a $(TARGET_DIR)/*.o # stitch all the obj files into an archive
 	rm $(TARGET_DIR)/*.o # remove the obj files
+
+lfc_tests:
+	$(MAKE) liblfc
+	cd $(TARGET_DIR) && $(CC) $(TESTS_CFLAGS) \
+		../$(TESTS_DIR)/array_tests.c         \
+		../$(TESTS_DIR)/linkedlist_tests.c    \
+		../$(TESTS_DIR)/set_tests.c           \
+		../$(TESTS_DIR)/vector_tests.c        \
+		../$(TESTS_DIR)/main.c
 
 collections:
 	mkdir -p $(TARGET_DIR)

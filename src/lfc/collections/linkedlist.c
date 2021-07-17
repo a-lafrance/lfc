@@ -86,7 +86,7 @@ size_t ll_find(list_t* list, void* target, int (*elem_eq)(void*, void*)) {
     return -1;
 }
 
-void* ll_remove(list_t* list, void* target, int (*elem_eq)(void*, void*) {
+void* ll_remove(list_t* list, void* target, int (*elem_eq)(void*, void*)) {
     struct ll_node* prev = NULL;
 
     for (struct ll_node* node = list->head; node != NULL; node = node->next) {
