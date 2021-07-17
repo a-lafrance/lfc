@@ -57,6 +57,21 @@ void ll_prepend(list_t* list, void* elem) {
     list->head = node;
 }
 
+void* ll_pop_first(list_t* list) {
+    if (ll_is_empty(list)) {
+        return NULL;
+    }
+    else {
+        struct ll_node* first = list->head;
+        void* elem = first->data;
+
+        list->head = list->head->next;
+
+        free(first);
+        return elem;
+    }
+}
+
 size_t ll_find(list_t* list, void* target, int (*elem_eq)(void*, void*)) {
     size_t i = 0;
 
@@ -69,4 +84,33 @@ size_t ll_find(list_t* list, void* target, int (*elem_eq)(void*, void*)) {
     }
 
     return -1;
+}
+
+void* ll_remove(list_t* list, void* target, int (*elem_eq)(void*, void*) {
+    struct ll_node* prev = NULL;
+
+    for (struct ll_node* node = list->head; node != NULL; node = node->next) {
+        void* elem = node->data;
+
+        if (elem_eq(elem, target)) {
+            if (prev != NULL) {
+                prev->next = node->next;
+            }
+            else {
+                list->head = node->next;
+            }
+
+            if (node->next == NULL) {
+                list->tail = NULL;
+            }
+
+            return elem;
+        }
+    }
+
+    return NULL;
+}
+
+int ll_is_empty(list_t* list) {
+    return list->len == 0;
 }

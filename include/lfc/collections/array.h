@@ -10,8 +10,7 @@ typedef struct {
     size_t elem_size;
 } array_t;
 
-// Initialize a new, empty array
-void array_new(array_t* array, size_t elem_size);
+// TODO: implicit allocation?
 
 // Initialize the array with the given contents
 void array_init(array_t* array, void* data, size_t len, size_t elem_size);
@@ -25,6 +24,7 @@ void* array_get(array_t* array, size_t index);
 
 // Set the value of the element at the given index in the array
 // Returns a pointer to the old value, in case it must be freed
+// NOTE: the element is added to the array through a byte-by-byte copy into the appropriate spot in memory
 void* array_set(array_t* array, size_t index, void* data);
 
 // Search the array for the given element

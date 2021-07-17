@@ -3,11 +3,6 @@
 
 #include <stdlib.h>
 
-void array_new(array_t* array, size_t elem_size) {
-    array->len = 0;
-    array->data = NULL;
-    array->elem_size = elem_size;
-}
 
 void array_init(array_t* array, void* data, size_t len, size_t elem_size) {
     array->data = data;

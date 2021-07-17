@@ -21,19 +21,27 @@ void vec_init(vec_t* vector, void* data, size_t len, size_t elem_size);
 void vec_free(vec_t* vector, void (*elem_free)(void*));
 
 // Initialize a new empty vector with the given capacity
-void vec_new(void* vector, size_t elem_size, size_t capacity);
+// Panics if an error is encountered during memory allocation
+void vec_new(vec_t* vector, size_t elem_size, size_t capacity);
+
+// Expand the vector to the given capacity
+// Panics if an error is encountered during memory allocation
+void vec_expand(vec_t* vector, size_t capacity);
 
 // Retrieve a pointer to the element at the given index in the vector
-void* vec_get(void* vector, size_t index);
+void* vec_get(vec_t* vector, size_t index);
 
 // Set the value of the element at the given index in the vector
 // Returns a pointer to the old value, in case it must be freed
-void* vec_set(void* vector, size_t index, void* data);
+// NOTE: the element is added to the vector through a byte-by-byte copy into the appropriate spot in memory
+void* vec_set(vec_t* vector, size_t index, void* data);
 
 // Appends the element to the end of the vector, growing the size of the vector if needed
-void vec_append(void* vector, void* data);
+// Panics if an error is encountered during memory allocation
+// NOTE: the element is added to the vector through a byte-by-byte copy into the appropriate spot in memory
+void vec_append(vec_t* vector, void* data);
 
 // Pop the last element from the end of the vector, and return it
-void* vec_pop(void* vector);
+void* vec_pop(vec_t* vector);
 
 #endif
