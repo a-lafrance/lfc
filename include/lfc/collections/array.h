@@ -3,14 +3,15 @@
 
 #include <stdlib.h>
 
+// QUIP: is array useless, or at least not useful enough to just its existence rn
+//       solution: implicit allocation, so that the array manages its own heap-allocated data
+
 // Fixed-size, checked array
 typedef struct {
     void* data;
     size_t len;
     size_t elem_size;
 } array_t;
-
-// TODO: implicit allocation?
 
 // Initialize the array with the given contents
 void array_init(array_t* array, void* data, size_t len, size_t elem_size);
@@ -23,9 +24,9 @@ void array_free(array_t* array, void (*elem_free)(void*));
 void* array_get(array_t* array, size_t index);
 
 // Set the value of the element at the given index in the array
-// Returns a pointer to the old value, in case it must be freed
+// If a cleanup routine is provided, it is executed on the existing value before overwriting it
 // NOTE: the element is added to the array through a byte-by-byte copy into the appropriate spot in memory
-void* array_set(array_t* array, size_t index, void* data);
+void array_set(array_t* array, size_t index, void* data, void (*elem_free)(void*));
 
 // Search the array for the given element
 // Returns the appropriate index if it exists, otherwise null

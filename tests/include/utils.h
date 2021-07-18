@@ -2,7 +2,9 @@
 #define LFC_ASSERT_HEADER
 
 #include "lfc/utils/panic.h"
+
 #include <stdio.h>
+#include <string.h>
 
 #define assert_or(condition, msg)                  \
 if (!(condition)) {                                \
@@ -21,10 +23,12 @@ if (!(condition)) {                                \
 #define assert_ge(lhs, rhs) assert(lhs >= rhs)
 #define assert_le(lhs, rhs) assert(lhs <= rhs)
 
-#define start_suite(name) printf("==== START: %s\n", name)
-#define end_suite(name)   printf("==== END:   %s\n\n", name)
+#define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 
-#define start_test(name)  printf("  [*] TEST: %s\n", name)
-#define end_test(name)    printf("  [*] DONE: %s\n\n", name)
+#define start_suite() printf("==== START: %s\n", __FILENAME__)
+#define end_suite()   printf("==== END:   %s\n\n", __FILENAME__)
+
+#define start_test()  printf("  [+] TEST: %s\n", __FUNCTION__)
+#define end_test()    printf("  [-] DONE: %s\n", __FUNCTION__)
 
 #endif
