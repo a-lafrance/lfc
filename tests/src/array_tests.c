@@ -5,6 +5,7 @@
 #include "lfc/utils/mem.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 
 // get
     // out of bounds panic test?
@@ -35,7 +36,7 @@ void something_free(void* thing) {
 
 
 array_t alloc_int_data(size_t len) {
-    int* data = calloc_unwrap(sizeof(int), len, "[array_tests] failed to alloc array during test");
+    int* data = calloc_unwrap(sizeof(int), len, "[array_tests] failed to alloc int array during test");
 
     array_t array;
     array_init(&array, data, len, sizeof(int));
@@ -44,7 +45,7 @@ array_t alloc_int_data(size_t len) {
 }
 
 array_t alloc_struct_data(size_t len) {
-    struct something* data = malloc_unwrap(sizeof(struct something), len, "[array_tests] failed to alloc array during test");
+    struct something* data = malloc_unwrap(sizeof(struct something), len, "[array_tests] failed to alloc struct array during test");
 
     for (int i = 0; i < len; i++) {
         struct something* thing = data + i;
@@ -130,17 +131,33 @@ void test_last_index_accessed_correctly() {
 void test_first_index_modified_correctly() {
     start_test();
 
+    /* --- Without cleanup --- */
     array_t int_array = alloc_int_data(3);
 
-    int* new = malloc_unwrap(sizeof(int), 1, "[array_t] failed to alloc int");
-    *new = 3;
-    array_set(&int_array, 0, new, NULL);
+    int* new_int = malloc_unwrap(sizeof(int), 1, "[array_t] failed to alloc int");
+    *new_int = 3;
+    array_set(&int_array, 0, new_int, NULL);
 
-    int* first = array_get(&int_array, 0);
-    assert_eq(*first, *new);
+    int* first_int = array_get(&int_array, 0);
+    assert_eq(*first_int, *new_int);
 
     array_free(&int_array, NULL);
-    free(new);
+    free(new_int);
+
+    /* --- With cleanup --- */
+    array_t struct_array = alloc_struct_data(3);
+
+    struct something* new_struct = malloc_unwrap(sizeof(struct something), 1, "[array_t] failed to alloc struct");
+    new_struct->n = malloc_unwrap(sizeof(int), 1, "[array_t] failed to alloc int field");
+    *(new_struct->n) = 5;
+
+    array_set(&struct_array, 0, new_struct, &something_free);
+
+    struct something* first_struct = array_get(&struct_array, 0);
+    assert_eq(*(first_struct->n), *(new_struct->n));
+
+    array_free(&struct_array, NULL);
+    free(new_struct);
 
     end_test();
 }
@@ -149,6 +166,7 @@ void test_first_index_modified_correctly() {
 void test_mid_index_modified_correctly() {
     start_test();
 
+    /* --- Without cleanup --- */
     array_t int_array = alloc_int_data(3);
 
     int* new = malloc_unwrap(sizeof(int), 1, "[array_t] failed to alloc int");
@@ -162,6 +180,22 @@ void test_mid_index_modified_correctly() {
     array_free(&int_array, NULL);
     free(new);
 
+    /* --- With cleanup --- */
+    array_t struct_array = alloc_struct_data(5);
+
+    struct something* new_struct = malloc_unwrap(sizeof(struct something), 1, "[array_t] failed to alloc struct");
+    new_struct->n = malloc_unwrap(sizeof(int), 1, "[array_t] failed to alloc int field");
+    *(new_struct->n) = 5;
+
+    size_t struct_index = 2;
+    array_set(&struct_array, struct_index, new_struct, &something_free);
+
+    struct something* struct_elem = array_get(&struct_array, struct_index);
+    assert_eq(*(struct_elem->n), *(new_struct->n));
+
+    array_free(&struct_array, NULL);
+    free(new_struct);
+
     end_test();
 }
 
@@ -169,6 +203,7 @@ void test_mid_index_modified_correctly() {
 void test_last_index_modified_correctly() {
     start_test();
 
+    /* --- Without cleanup --- */
     array_t int_array = alloc_int_data(3);
 
     int* new = malloc_unwrap(sizeof(int), 1, "[array_t] failed to alloc int");
@@ -181,6 +216,22 @@ void test_last_index_modified_correctly() {
 
     array_free(&int_array, NULL);
     free(new);
+
+    /* --- With cleanup --- */
+    array_t struct_array = alloc_struct_data(5);
+
+    struct something* new_struct = malloc_unwrap(sizeof(struct something), 1, "[array_t] failed to alloc struct");
+    new_struct->n = malloc_unwrap(sizeof(int), 1, "[array_t] failed to alloc int field");
+    *(new_struct->n) = 5;
+
+    size_t struct_index = struct_array.len - 1;
+    array_set(&struct_array, struct_index, new_struct, &something_free);
+
+    struct something* last_struct = array_get(&struct_array, struct_index);
+    assert_eq(*(last_struct->n), *(new_struct->n));
+
+    array_free(&struct_array, NULL);
+    free(new_struct);
 
     end_test();
 }
