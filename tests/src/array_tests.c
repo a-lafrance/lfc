@@ -7,23 +7,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-// get
-    // out of bounds panic test?
-// set
-    // index 0 works
-        // with cleanup
-        // without cleanup
-    // index in middle works
-        // with cleanup
-        // without cleanup
-    // last index works
-        // with cleanup
-        // without cleanup
-    // ^ all with and without cleanup
-// find
-    // elem is found
-    // elem not found
-    // null elem_eq panic test?
 
 struct something {
     int* n;
@@ -56,6 +39,10 @@ array_t alloc_struct_data(size_t len) {
     array_init(&array, data, len, sizeof(struct something));
 
     return array;
+}
+
+int int_eq(void* lhs, void* rhs) {
+    return *(int*)lhs == *(int*)rhs;
 }
 
 
@@ -127,6 +114,8 @@ void test_last_index_accessed_correctly() {
     end_test();
 }
 
+// array_get: out of bounds panic test?
+
 
 void test_first_index_modified_correctly() {
     start_test();
@@ -134,7 +123,7 @@ void test_first_index_modified_correctly() {
     /* --- Without cleanup --- */
     array_t int_array = alloc_int_data(3);
 
-    int* new_int = malloc_unwrap(sizeof(int), 1, "[array_t] failed to alloc int");
+    int* new_int = malloc_unwrap(sizeof(int), 1, "[array_tests] failed to alloc int");
     *new_int = 3;
     array_set(&int_array, 0, new_int, NULL);
 
@@ -147,8 +136,8 @@ void test_first_index_modified_correctly() {
     /* --- With cleanup --- */
     array_t struct_array = alloc_struct_data(3);
 
-    struct something* new_struct = malloc_unwrap(sizeof(struct something), 1, "[array_t] failed to alloc struct");
-    new_struct->n = malloc_unwrap(sizeof(int), 1, "[array_t] failed to alloc int field");
+    struct something* new_struct = malloc_unwrap(sizeof(struct something), 1, "[array_tests] failed to alloc struct");
+    new_struct->n = malloc_unwrap(sizeof(int), 1, "[array_tests] failed to alloc int field");
     *(new_struct->n) = 5;
 
     array_set(&struct_array, 0, new_struct, &something_free);
@@ -169,7 +158,7 @@ void test_mid_index_modified_correctly() {
     /* --- Without cleanup --- */
     array_t int_array = alloc_int_data(3);
 
-    int* new = malloc_unwrap(sizeof(int), 1, "[array_t] failed to alloc int");
+    int* new = malloc_unwrap(sizeof(int), 1, "[array_tests] failed to alloc int");
     *new = 3;
     size_t index = int_array.len / 2;
     array_set(&int_array, index, new, NULL);
@@ -183,8 +172,8 @@ void test_mid_index_modified_correctly() {
     /* --- With cleanup --- */
     array_t struct_array = alloc_struct_data(5);
 
-    struct something* new_struct = malloc_unwrap(sizeof(struct something), 1, "[array_t] failed to alloc struct");
-    new_struct->n = malloc_unwrap(sizeof(int), 1, "[array_t] failed to alloc int field");
+    struct something* new_struct = malloc_unwrap(sizeof(struct something), 1, "[array_tests] failed to alloc struct");
+    new_struct->n = malloc_unwrap(sizeof(int), 1, "[array_tests] failed to alloc int field");
     *(new_struct->n) = 5;
 
     size_t struct_index = 2;
@@ -206,7 +195,7 @@ void test_last_index_modified_correctly() {
     /* --- Without cleanup --- */
     array_t int_array = alloc_int_data(3);
 
-    int* new = malloc_unwrap(sizeof(int), 1, "[array_t] failed to alloc int");
+    int* new = malloc_unwrap(sizeof(int), 1, "[array_tests] failed to alloc int");
     *new = 3;
     size_t index = int_array.len - 1;
     array_set(&int_array, index, new, NULL);
@@ -220,8 +209,8 @@ void test_last_index_modified_correctly() {
     /* --- With cleanup --- */
     array_t struct_array = alloc_struct_data(5);
 
-    struct something* new_struct = malloc_unwrap(sizeof(struct something), 1, "[array_t] failed to alloc struct");
-    new_struct->n = malloc_unwrap(sizeof(int), 1, "[array_t] failed to alloc int field");
+    struct something* new_struct = malloc_unwrap(sizeof(struct something), 1, "[array_tests] failed to alloc struct");
+    new_struct->n = malloc_unwrap(sizeof(int), 1, "[array_tests] failed to alloc int field");
     *(new_struct->n) = 5;
 
     size_t struct_index = struct_array.len - 1;
@@ -237,6 +226,54 @@ void test_last_index_modified_correctly() {
 }
 
 
+void test_find_elem_found_when_present() {
+    start_test();
+
+    array_t array = alloc_int_data(5);
+
+    for (size_t i = 0; i < array.len; i++) {
+        int* val = array_get(&array, i);
+        *val = i;
+    }
+
+    int* target = malloc_unwrap(sizeof(int), 1, "[array_tests] failed to alloc int value");
+    *target = array.len / 2;
+
+    size_t target_index = array_find(&array, target, &int_eq);
+    assert_eq(target_index, (size_t)*target);
+
+    array_free(&array, NULL);
+    free(target);
+
+    end_test();
+}
+
+
+void test_find_elem_not_found_when_missing() {
+    start_test();
+
+    array_t array = alloc_int_data(3);
+
+    for (size_t i = 0; i < array.len; i++) {
+        int* val = array_get(&array, i);
+        *val = i;
+    }
+
+    int* target = malloc_unwrap(sizeof(int), 1, "[array_tests] failed to alloc int value");
+    *target = array.len + 1;
+
+    size_t target_index = array_find(&array, target, &int_eq);
+    assert_eq(target_index, (size_t)-1);
+
+    array_free(&array, NULL);
+    free(target);
+
+    end_test();
+}
+
+// array_find: null elem_eq panic test?
+
+
 void run_array_tests() {
     start_suite();
 
@@ -250,6 +287,9 @@ void run_array_tests() {
     test_first_index_modified_correctly();
     test_mid_index_modified_correctly();
     test_last_index_modified_correctly();
+
+    test_find_elem_found_when_present();
+    test_find_elem_not_found_when_missing();
 
     end_suite();
 }

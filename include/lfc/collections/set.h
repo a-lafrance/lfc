@@ -8,7 +8,7 @@
 #define MAX_LOAD_FACTOR 0.5
 #define DEFAULT_BUCKETS 20
 
-typedef int (*hash_fn_t)(void*);
+typedef size_t (*hash_fn_t)(void*);
 
 typedef struct {
     hash_fn_t hash_fn;
