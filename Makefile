@@ -1,5 +1,5 @@
-INCLUDE_DIR = include/lfc
-SRC_DIR = src/lfc
+INCLUDE_DIR = include
+SRC_DIR = src
 TARGET_DIR = target
 TESTS_DIR = tests/src
 
@@ -10,9 +10,10 @@ TESTS_CFLAGS = -I../include -I../tests/include -L. -llfc -o tests
 # TODO: audit this build stuff because what if globs are bad
 
 liblfc:
-	$(MAKE) collections utils # build each part of the lib
+	$(MAKE) proper_include collections utils # build each part of the lib
 	ar -rc $(TARGET_DIR)/$@.a $(TARGET_DIR)/*.o # stitch all the obj files into an archive
-	rm $(TARGET_DIR)/*.o # remove the obj files
+	-rm $(TARGET_DIR)/*.o # remove the obj files
+	$(MAKE) undo_proper_include
 
 lfc_tests:
 	$(MAKE) liblfc
@@ -34,6 +35,18 @@ utils:
 	mkdir -p $(TARGET_DIR)
 	cd $(TARGET_DIR) && $(CC) $(CFLAGS) \
 		../$(SRC_DIR)/utils/mem.c
+
+proper_include:
+	mkdir -p $(INCLUDE_DIR)/lfc
+	mv $(INCLUDE_DIR)/collections $(INCLUDE_DIR)/lfc
+	mv $(INCLUDE_DIR)/utils $(INCLUDE_DIR)/lfc
+
+# QUIP: this is ridiculously inefficient for large projects so there has to be a better way
+#       symlink every file rather than every directory? yikes
+undo_proper_include:
+	mv $(INCLUDE_DIR)/lfc/collections $(INCLUDE_DIR)
+	mv $(INCLUDE_DIR)/lfc/utils $(INCLUDE_DIR)
+	-rm -rf $(INCLUDE_DIR)/lfc
 
 clean:
 	-rm -rf target
