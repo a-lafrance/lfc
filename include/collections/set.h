@@ -2,13 +2,12 @@
 #define LFC_SET_HEADER
 
 #include "lfc/collections/array.h"
+#include "lfc/utils/hash.h"
 
 #include <stdlib.h>
 
 #define MAX_LOAD_FACTOR 0.5
 #define DEFAULT_BUCKETS 20
-
-typedef size_t (*hash_fn_t)(void*);
 
 typedef struct {
     hash_fn_t hash_fn;

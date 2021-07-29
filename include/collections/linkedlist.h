@@ -21,6 +21,12 @@ void ll_init(list_t* list);
 // Note that the actual data is not freed; the destructor must free it if necessary
 void ll_free(list_t* list, void (*elem_free)(void*));
 
+// Returns a pointer to the first element of the list, if it exists
+void* ll_first(list_t* list);
+
+// Returns a pointer to the last element of the list, if it exists
+void* ll_last(list_t* list);
+
 // Append an element to the tail of the linked list
 void ll_append(list_t* list, void* elem);
 
@@ -30,9 +36,8 @@ void ll_prepend(list_t* list, void* elem);
 // Pop the first element off the list, or null if the list is empty
 void* ll_pop_first(list_t* list);
 
-// Search the linked list for the given value, returning its index if found
-// WAIT: isn't returning the index mostly useless because linked lists can't be freely indexed
-size_t ll_find(list_t* list, void* target, int (*elem_eq)(void*, void*));
+// Return whether or not the linked list contains the given value
+int ll_find(list_t* list, void* target, int (*elem_eq)(void*, void*));
 
 // Remove the element that equals the given target, if found
 void* ll_remove(list_t* list, void* target, int (*elem_eq)(void*, void*));

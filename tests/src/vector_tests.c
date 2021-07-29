@@ -1,5 +1,5 @@
 #include "vector_tests.h"
-#include "utils.h"
+#include "setup.h"
 
 void run_vector_tests() {
     start_suite();

@@ -1,4 +1,7 @@
 #include "array_tests.h"
+
+#include "assert.h"
+#include "setup.h"
 #include "utils.h"
 
 #include "lfc/collections/array.h"
@@ -6,16 +9,6 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-
-
-struct something {
-    int* n;
-};
-
-void something_free(void* thing) {
-    struct something* something = thing;
-    free(something->n);
-}
 
 
 array_t alloc_int_data(size_t len) {
@@ -31,8 +24,7 @@ array_t alloc_struct_data(size_t len) {
     struct something* data = malloc_unwrap(sizeof(struct something), len, "[array_tests] failed to alloc struct array during test");
 
     for (int i = 0; i < len; i++) {
-        struct something* thing = data + i;
-        thing->n = calloc_unwrap(sizeof(int), 1, "[array_tests] failed to alloc (struct something).n during test");
+        something_init_zeroed(data + i);
     }
 
     array_t array;
@@ -137,8 +129,7 @@ void test_first_index_modified_correctly() {
     array_t struct_array = alloc_struct_data(3);
 
     struct something* new_struct = malloc_unwrap(sizeof(struct something), 1, "[array_tests] failed to alloc struct");
-    new_struct->n = malloc_unwrap(sizeof(int), 1, "[array_tests] failed to alloc int field");
-    *(new_struct->n) = 5;
+    something_init(new_struct, 5);
 
     array_set(&struct_array, 0, new_struct, &something_free);
 
@@ -173,8 +164,7 @@ void test_mid_index_modified_correctly() {
     array_t struct_array = alloc_struct_data(5);
 
     struct something* new_struct = malloc_unwrap(sizeof(struct something), 1, "[array_tests] failed to alloc struct");
-    new_struct->n = malloc_unwrap(sizeof(int), 1, "[array_tests] failed to alloc int field");
-    *(new_struct->n) = 5;
+    something_init(new_struct, 5);
 
     size_t struct_index = 2;
     array_set(&struct_array, struct_index, new_struct, &something_free);
@@ -210,8 +200,7 @@ void test_last_index_modified_correctly() {
     array_t struct_array = alloc_struct_data(5);
 
     struct something* new_struct = malloc_unwrap(sizeof(struct something), 1, "[array_tests] failed to alloc struct");
-    new_struct->n = malloc_unwrap(sizeof(int), 1, "[array_tests] failed to alloc int field");
-    *(new_struct->n) = 5;
+    something_init(new_struct, 5);
 
     size_t struct_index = struct_array.len - 1;
     array_set(&struct_array, struct_index, new_struct, &something_free);

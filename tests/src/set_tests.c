@@ -1,5 +1,5 @@
 #include "set_tests.h"
-#include "utils.h"
+#include "setup.h"
 
 void run_set_tests() {
     start_suite();

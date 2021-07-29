@@ -16,13 +16,15 @@ liblfc:
 	$(MAKE) undo_proper_include
 
 lfc_tests:
-	$(MAKE) liblfc
+	$(MAKE) liblfc proper_include
 	cd $(TARGET_DIR) && $(CC) $(TESTS_CFLAGS) \
 		../$(TESTS_DIR)/array_tests.c         \
 		../$(TESTS_DIR)/linkedlist_tests.c    \
 		../$(TESTS_DIR)/set_tests.c           \
 		../$(TESTS_DIR)/vector_tests.c        \
+		../$(TESTS_DIR)/utils.c               \
 		../$(TESTS_DIR)/main.c
+	$(MAKE) undo_proper_include
 
 collections:
 	mkdir -p $(TARGET_DIR)

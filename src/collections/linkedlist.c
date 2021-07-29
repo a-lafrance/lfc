@@ -32,6 +32,14 @@ void ll_free(list_t* list, void (*elem_free)(void*)) {
     }
 }
 
+void* ll_first(list_t* list) {
+    return list->head != NULL ? list->head->data : NULL;
+}
+
+void* ll_last(list_t* list) {
+    return list->tail != NULL ? list->tail->data : NULL;
+}
+
 void ll_append(list_t* list, void* elem) {
     struct ll_node* node = malloc_unwrap(sizeof(struct ll_node), 1, "[ll_append] failed to alloc new node");
     ll_node_init(node, NULL, elem);
@@ -44,6 +52,7 @@ void ll_append(list_t* list, void* elem) {
     }
 
     list->tail = node;
+    list->len += 1;
 }
 
 void ll_prepend(list_t* list, void* elem) {
@@ -55,6 +64,7 @@ void ll_prepend(list_t* list, void* elem) {
     }
 
     list->head = node;
+    list->len += 1;
 }
 
 void* ll_pop_first(list_t* list) {
@@ -67,23 +77,21 @@ void* ll_pop_first(list_t* list) {
 
         list->head = list->head->next;
 
+        list->len -= 1;
         free(first);
+
         return elem;
     }
 }
 
-size_t ll_find(list_t* list, void* target, int (*elem_eq)(void*, void*)) {
-    size_t i = 0;
-
+int ll_find(list_t* list, void* target, int (*elem_eq)(void*, void*)) {
     for (struct ll_node* node = list->head; node != NULL; node = node->next) {
         if (elem_eq(node->data, target)) {
-            return i;
+            return 1;
         }
-
-        i++;
     }
 
-    return -1;
+    return 0;
 }
 
 void* ll_remove(list_t* list, void* target, int (*elem_eq)(void*, void*)) {
@@ -103,6 +111,8 @@ void* ll_remove(list_t* list, void* target, int (*elem_eq)(void*, void*)) {
             if (node->next == NULL) {
                 list->tail = NULL;
             }
+
+            list->len -= 1;
 
             return elem;
         }
