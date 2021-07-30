@@ -22,6 +22,7 @@ lfc_tests:
 		../$(TESTS_DIR)/linkedlist_tests.c    \
 		../$(TESTS_DIR)/set_tests.c           \
 		../$(TESTS_DIR)/vector_tests.c        \
+		../$(TESTS_DIR)/hash_tests.c          \
 		../$(TESTS_DIR)/utils.c               \
 		../$(TESTS_DIR)/main.c
 	$(MAKE) undo_proper_include
