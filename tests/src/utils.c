@@ -15,3 +15,7 @@ void something_free(void* thing) {
     struct something* something = thing;
     free(something->n);
 }
+
+int int_eq(void* lhs, void* rhs) {
+   return *(int*)lhs == *(int*)rhs;
+}

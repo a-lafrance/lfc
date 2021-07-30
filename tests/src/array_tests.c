@@ -33,10 +33,6 @@ array_t alloc_struct_data(size_t len) {
     return array;
 }
 
-int int_eq(void* lhs, void* rhs) {
-    return *(int*)lhs == *(int*)rhs;
-}
-
 
 void test_array_init_and_freed_correctly_no_elem_free() {
     start_test();

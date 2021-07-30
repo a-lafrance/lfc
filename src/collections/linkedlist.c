@@ -76,8 +76,12 @@ void* ll_pop_first(list_t* list) {
         void* elem = first->data;
 
         list->head = list->head->next;
-
         list->len -= 1;
+
+        if (list->head == NULL) {
+            list->tail = NULL;
+        }
+
         free(first);
 
         return elem;

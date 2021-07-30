@@ -4,7 +4,7 @@ TARGET_DIR = target
 TESTS_DIR = tests/src
 
 CC = clang
-CFLAGS = -c -I../include
+CFLAGS = -g -c -I../include
 TESTS_CFLAGS = -I../include -I../tests/include -L. -llfc -o tests
 
 # TODO: audit this build stuff because what if globs are bad

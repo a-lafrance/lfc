@@ -9,4 +9,6 @@ void something_init(struct something* thing, int n);
 void something_init_zeroed(struct something* thing);
 void something_free(/* struct something* */ void* thing);
 
+int int_eq(void* lhs, void* rhs);
+
 #endif
