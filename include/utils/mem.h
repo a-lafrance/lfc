@@ -3,6 +3,8 @@
 
 #include <stdlib.h>
 
+// TODO: generic free function type?
+
 // Wrapper around malloc that panics on error
 void* malloc_unwrap(size_t elem_size, size_t elems, char* error_msg);
 

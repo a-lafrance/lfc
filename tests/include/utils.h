@@ -11,4 +11,7 @@ void something_free(/* struct something* */ void* thing);
 
 int int_eq(void* lhs, void* rhs);
 
+int str_eq(void* lhs, void* rhs);
+void str_free(void* str);
+
 #endif
