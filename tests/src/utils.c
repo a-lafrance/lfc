@@ -2,6 +2,9 @@
 
 #include "lfc/utils/mem.h"
 
+#include <stdlib.h>
+#include <string.h>
+
 void something_init(struct something* thing, int n) {
     thing->n = malloc_unwrap(sizeof(int), 1, "[struct something] failed to alloc int field");
     *thing->n = n;
@@ -18,4 +21,12 @@ void something_free(void* thing) {
 
 int int_eq(void* lhs, void* rhs) {
    return *(int*)lhs == *(int*)rhs;
+}
+
+int str_eq(void* lhs, void* rhs) {
+    return strcmp(lhs, rhs) == 0;
+}
+
+void str_free(void* str) {
+    free(str);
 }

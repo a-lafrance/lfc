@@ -7,7 +7,7 @@
 #include <stdlib.h>
 
 #define MAX_LOAD_FACTOR 0.5
-#define DEFAULT_BUCKETS 20
+#define DEFAULT_BUCKETS (size_t)20
 
 typedef struct {
     hash_fn_t hash_fn;
@@ -20,8 +20,7 @@ typedef struct {
 void hashset_init(hashset_t* set, size_t n_buckets, hash_fn_t hash_fn, int (*elem_eq)(void*, void*));
 
 // Free the contents of the set
-// Because elements are assumed to be dynamically allocated, element pointers are automatically freed by this function, so
-//   the provided element cleanup function must only free the contents of each element, not the pointers themselves
+// Elements are not assumed to be dynamically allocated, so they must be freed manually if necessary
 void hashset_free(hashset_t* set, void (*elem_free)(void*));
 
 // Insert an element into the set
