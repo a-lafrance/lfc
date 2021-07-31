@@ -37,7 +37,8 @@ collections:
 utils:
 	mkdir -p $(TARGET_DIR)
 	cd $(TARGET_DIR) && $(CC) $(CFLAGS) \
-		../$(SRC_DIR)/utils/mem.c
+		../$(SRC_DIR)/utils/mem.c       \
+		../$(SRC_DIR)/utils/hash.c
 
 proper_include:
 	mkdir -p $(INCLUDE_DIR)/lfc
