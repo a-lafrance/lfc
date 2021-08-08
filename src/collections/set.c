@@ -6,6 +6,8 @@
 #include "lfc/utils/panic.h"
 #include "lfc/utils/mem.h"
 
+#include <stdio.h>
+
 array_t hashset_alloc_buckets(size_t n_buckets) {
     list_t* bucket_array = malloc_unwrap(sizeof(list_t), n_buckets, "[hashset_t] failed to alloc buckets");
 
@@ -35,6 +37,15 @@ void hashset_init(hashset_t* set, size_t n_buckets, hash_fn_t hash_fn, int (*ele
     set->buckets = hashset_alloc_buckets(n_buckets);
 }
 
+void hashset_free(hashset_t* set, void (*elem_free)(void*)) {
+    for (size_t i = 0; i < set->buckets.len; i++) {
+        list_t* bucket = array_get(&set->buckets, i);
+        ll_free(bucket, elem_free);
+    }
+
+    array_free(&set->buckets, NULL);
+}
+
 void hashset_bucket_free(void* bucket) {
     ll_free(bucket, NULL);
 }
@@ -43,6 +54,7 @@ void hashset_rehash(hashset_t* set) {
     // make new buckets
     array_t old_buckets = set->buckets;
     set->buckets = hashset_alloc_buckets(set->buckets.len * 2);
+    set->size = 0;
 
     // stick everything from old buckets to new
     for (size_t i = 0; i < old_buckets.len; i++) {
@@ -95,7 +107,7 @@ int hashset_contains(hashset_t* set, void* elem) {
     size_t bucket_index = hashset_bucket_index(set, elem);
     list_t* bucket = array_get(&set->buckets, bucket_index);
 
-    return ll_find(bucket, elem, set->elem_eq) != -1;
+    return ll_find(bucket, elem, set->elem_eq);
 }
 
 int hashset_is_empty(hashset_t* set) {
