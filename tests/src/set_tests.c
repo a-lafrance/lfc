@@ -169,7 +169,6 @@ void test_hashset_remove_from_many_elem_set_no_cleanup() {
     end_test();
 }
 
-// FIXME: segfault
 void test_hashset_remove_from_many_elem_set_with_cleanup() {
     start_test();
 
@@ -179,7 +178,7 @@ void test_hashset_remove_from_many_elem_set_with_cleanup() {
     char* strs[4] = {"hello", "world", "asg", "acya"};
     int n_strs = 4;
 
-    for (int i = 0; i <= n_strs; i++) {
+    for (int i = 0; i < n_strs; i++) {
         char* str = strs[i];
         char* elem = malloc_unwrap(sizeof(char), strlen(str) + 1, "[set_tests] failed to alloc str value");
         strcpy(elem, str);
