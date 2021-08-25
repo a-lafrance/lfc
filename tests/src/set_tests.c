@@ -1,4 +1,4 @@
-#include "set_tests.h"
+#include "hashset_tests.h"
 
 #include "assert.h"
 #include "setup.h"
@@ -28,7 +28,7 @@ void test_hashset_init_and_freed_correctly_no_cleanup() {
     assert_eq(hashset_load_factor(&set), 0);
     assert(hashset_is_empty(&set));
 
-    int* n = calloc_unwrap(sizeof(int), 1, "[set_tests] unable to alloc int value");
+    int* n = calloc_unwrap(sizeof(int), 1, "[hashset_tests] unable to alloc int value");
     assert_false(hashset_contains(&set, n));
 
     hashset_free(&set, NULL);
@@ -107,7 +107,7 @@ void test_hashset_remove_from_one_elem_set_no_cleanup() {
     hashset_t set;
     hashset_init(&set, DEFAULT_BUCKETS, &int_simple_hash, &int_eq);
 
-    int* elem = malloc_unwrap(sizeof(int), 1, "[set_tests] failed to alloc int value");
+    int* elem = malloc_unwrap(sizeof(int), 1, "[hashset_tests] failed to alloc int value");
     *elem = 3;
 
     hashset_insert(&set, elem);
@@ -130,7 +130,7 @@ void test_hashset_remove_from_one_elem_set_with_cleanup() {
     hashset_init(&set, DEFAULT_BUCKETS, &str_simple_hash, &str_eq);
 
     char* str = "hello world";
-    char* elem = malloc_unwrap(sizeof(char), strlen(str) + 1, "[set_tests] failed to alloc str value");
+    char* elem = malloc_unwrap(sizeof(char), strlen(str) + 1, "[hashset_tests] failed to alloc str value");
     strcpy(elem, str);
 
     hashset_insert(&set, elem);
@@ -180,7 +180,7 @@ void test_hashset_remove_from_many_elem_set_with_cleanup() {
 
     for (int i = 0; i < n_strs; i++) {
         char* str = strs[i];
-        char* elem = malloc_unwrap(sizeof(char), strlen(str) + 1, "[set_tests] failed to alloc str value");
+        char* elem = malloc_unwrap(sizeof(char), strlen(str) + 1, "[hashset_tests] failed to alloc str value");
         strcpy(elem, str);
         hashset_insert(&set, elem);
     }
