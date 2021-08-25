@@ -1,4 +1,4 @@
-#include "hashset_tests.h"
+#include "set_tests.h"
 
 #include "assert.h"
 #include "setup.h"
