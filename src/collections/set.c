@@ -6,8 +6,6 @@
 #include "lfc/utils/panic.h"
 #include "lfc/utils/mem.h"
 
-#include <stdio.h>
-
 array_t hashset_alloc_buckets(size_t n_buckets) {
     list_t* bucket_array = malloc_unwrap(sizeof(list_t), n_buckets, "[hashset_t] failed to alloc buckets");
 
