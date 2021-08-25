@@ -3,10 +3,10 @@
 
 #include <stdlib.h>
 
-// QUIP: is array useless, or at least not useful enough to just its existence rn
-//       solution: implicit allocation, so that the array manages its own heap-allocated data
+/// Fixed-size, checked array; more or less a "checked pointer". `array_t` makes no assumptions about how memory
+/// is allocated, but does perform bounds checking to ensure that accesses are within the bounds of the array,
+/// and does provide a simple search mechanism.
 
-// Fixed-size, checked array
 typedef struct {
     void* data;
     size_t len;

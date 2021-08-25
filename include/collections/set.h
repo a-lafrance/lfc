@@ -9,6 +9,10 @@
 #define MAX_LOAD_FACTOR 0.5
 #define DEFAULT_BUCKETS (size_t)20
 
+/// A hash-based set, implemented with separate chaining collision resolution.
+/// Hash and equality functions must be provided; elements are stored in linked list-based buckets,
+/// and can be added or removed. Rehashing occurs when load factor reaches the max load factor listed above.
+
 typedef struct {
     hash_fn_t hash_fn;
     int (*elem_eq)(void*, void*); // equality between two elements

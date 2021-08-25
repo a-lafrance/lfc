@@ -3,6 +3,9 @@
 
 #include <stdlib.h>
 
+/// Implements a simple, singly-linked list. Elements can be inspected & inserted
+/// from the front & back of the list. Simple search & removal is also provided.
+
 struct ll_node {
     struct ll_node* next;
     void* data;

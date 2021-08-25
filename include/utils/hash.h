@@ -3,11 +3,19 @@
 
 #include <stdlib.h>
 
+/// A hash "trait" & simple hash functions. By "trait" I just mean general interface
+/// for implementing hashing -- it just specifies the contract required for hashing to work.
+/// Two hash functions are provided: one for ints and one for strings. Both are very simple,
+/// and are more or less the bare minimum in terms of actual functionality.
+
 typedef size_t (*hash_fn_t)(void*);
 
-// Not literally only operating on ints -- these hashes operate on anything that fits into a `size_t`
+/// So simple, it just returns the value itself. Note that this operates on anything that will fit
+/// in a `size_t`, not specifically the `int` type.
 size_t int_simple_hash(void* x);
 
+/// Hashes the string by calculating a polynomial of based on its characters. If the pointer provided
+/// is null, the function panics.
 size_t str_simple_hash(void* val);
 
 // TODO: more & better hashes
