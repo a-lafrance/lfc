@@ -46,8 +46,7 @@ void ll_append(list_t* list, void* elem) {
 
     if (list->head == NULL) {
         list->head = node;
-    }
-    else {
+    } else {
         list->tail->next = node;
     }
 
@@ -70,8 +69,7 @@ void ll_prepend(list_t* list, void* elem) {
 void* ll_pop_first(list_t* list) {
     if (ll_is_empty(list)) {
         return NULL;
-    }
-    else {
+    } else {
         struct ll_node* first = list->head;
         void* elem = first->data;
 
@@ -107,8 +105,7 @@ void* ll_remove(list_t* list, void* target, int (*elem_eq)(void*, void*)) {
         if (elem_eq(elem, target)) {
             if (prev != NULL) {
                 prev->next = node->next;
-            }
-            else {
+            } else {
                 list->head = node->next;
             }
 

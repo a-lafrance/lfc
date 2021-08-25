@@ -18,7 +18,7 @@ typedef struct {
 void ll_init(list_t* list);
 
 // Free the contents of the linked list, freeing each element according to the provided destructor
-// Note that the actual data is not freed; the destructor must free it if necessary
+// Note that the actual data pointer is not freed; the destructor must free it if necessary
 void ll_free(list_t* list, void (*elem_free)(void*));
 
 // Returns a pointer to the first element of the list, if it exists

@@ -98,8 +98,12 @@ void hashset_remove(hashset_t* set, void* elem, void (*elem_free)(void*)) {
 
     void* removed = ll_remove(bucket, elem, set->elem_eq);
 
-    if (removed != NULL && elem_free != NULL) {
-        elem_free(removed);
+    if (removed != NULL) {
+        set->size -= 1;
+
+        if (elem_free != NULL) {
+            elem_free(removed);
+        }
     }
 }
 
