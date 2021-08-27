@@ -5,7 +5,7 @@ TESTS_DIR = tests/src
 
 CC = clang
 CFLAGS = -g -c -I../include
-TESTS_CFLAGS = -I../include -I../tests/include -L. -llfc -o tests
+TESTS_CFLAGS = -I../include -I../tests/include -L. -llfc -ldne -o tests
 
 # TODO: audit this build stuff because what if globs are bad
 
@@ -17,7 +17,7 @@ liblfc:
 
 lfc_tests:
 	$(MAKE) liblfc proper_include
-	cd $(TARGET_DIR) && ls && $(CC) $(TESTS_CFLAGS) \
+	cd $(TARGET_DIR) && $(CC) $(TESTS_CFLAGS) \
 		../$(TESTS_DIR)/array_tests.c         \
 		../$(TESTS_DIR)/linkedlist_tests.c    \
 		../$(TESTS_DIR)/set_tests.c           \
