@@ -15,11 +15,8 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
 
-      - name: Check if clang is installed
-        run: clang --version
-
       - name: Build liblfc and unit tests
-        run: cd $GITHUB_WORKSPACE && pwd && make lfc_tests
+        run: cd $GITHUB_WORKSPACE && make lfc_tests
         
       # - name: Run unit tests (if build succeeded)
       #  run: |
