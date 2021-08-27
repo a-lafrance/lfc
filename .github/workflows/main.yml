@@ -12,7 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Check out the repo at $GITHUB_WORKSPACE
-      - uses: actions/checkout@v2
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Check if clang is installed
+        run: clang --version
 
       - name: Build liblfc and unit tests
         run: cd $GITHUB_WORKSPACE && pwd && make lfc_tests
