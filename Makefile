@@ -17,7 +17,7 @@ liblfc:
 
 lfc_tests:
 	$(MAKE) liblfc proper_include
-	cd $(TARGET_DIR) && nm -gC liblfc.a && $(CC) $(TESTS_CFLAGS) \
+	cd $(TARGET_DIR) && $(CC) $(TESTS_CFLAGS)     \
 		../$(TESTS_DIR)/array_tests.c         \
 		../$(TESTS_DIR)/linkedlist_tests.c    \
 		../$(TESTS_DIR)/set_tests.c           \
@@ -28,14 +28,14 @@ lfc_tests:
 
 collections:
 	mkdir -p $(TARGET_DIR)
-	cd $(TARGET_DIR) && $(CC) $(CFLAGS)        \
+	cd $(TARGET_DIR) && $(CC) $(CFLAGS)            \
 		../$(SRC_DIR)/collections/array.c      \
 		../$(SRC_DIR)/collections/linkedlist.c \
 		../$(SRC_DIR)/collections/set.c
 
 utils:
 	mkdir -p $(TARGET_DIR)
-	cd $(TARGET_DIR) && $(CC) $(CFLAGS) \
+	cd $(TARGET_DIR) && $(CC) $(CFLAGS)     \
 		../$(SRC_DIR)/utils/mem.c       \
 		../$(SRC_DIR)/utils/hash.c
 
