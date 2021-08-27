@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Build liblfc and unit tests
-        run: cd $GITHUB_WORKSPACE && make proper_include && make collections && ls target # make lfc_tests
+        run: cd $GITHUB_WORKSPACE && make lfc_tests
         
       # - name: Run unit tests (if build succeeded)
       #  run: |
