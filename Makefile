@@ -5,13 +5,13 @@ TESTS_DIR = tests/src
 
 CC = clang
 CFLAGS = -g -c -I../include
-TESTS_CFLAGS = -I../include -I../tests/include -L. -llfc -ldne -o tests
+TESTS_CFLAGS = -I../include -I../tests/include -L. -llfc -o tests
 
 # TODO: audit this build stuff because what if globs are bad
 
 liblfc:
 	$(MAKE) proper_include collections utils # build each part of the lib
-	ar -rc $(TARGET_DIR)/$@.a $(TARGET_DIR)/*.o # stitch all the obj files into an archive
+	ar -rc -v $(TARGET_DIR)/$@.a $(TARGET_DIR)/*.o # stitch all the obj files into an archive
 	-rm $(TARGET_DIR)/*.o # remove the obj files
 	$(MAKE) undo_proper_include
 
