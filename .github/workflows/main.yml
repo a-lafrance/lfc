@@ -9,7 +9,7 @@ on:
 
 jobs:
   run_tests:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       # Check out the repo at $GITHUB_WORKSPACE
       - name: Checkout repo
