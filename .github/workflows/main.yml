@@ -9,7 +9,7 @@ on:
 
 jobs:
   run_tests:
-    runs-on: macos-latest
+    runs-on: macos-latest # FIXME: this only works on macOS for some reason (Ubuntu failed)
     steps:
       # Check out the repo at $GITHUB_WORKSPACE
       - name: Checkout repo
@@ -18,9 +18,9 @@ jobs:
       - name: Build liblfc and unit tests
         run: cd $GITHUB_WORKSPACE && make lfc_tests
         
-      # - name: Run unit tests (if build succeeded)
-      #  run: |
-      #    if [ $? -eq 0 ] && [ -e ./target/tests ]
-      #    then
-      #      target/tests
-      #    fi
+      - name: Run unit tests (if build succeeded)
+        run: |
+         if [ $? -eq 0 ] && [ -e ./target/tests ]
+         then
+           target/tests
+         fi
