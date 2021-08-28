@@ -12,11 +12,11 @@ typedef size_t (*hash_fn_t)(void*);
 
 /// So simple, it just returns the value itself. Note that this operates on anything that will fit
 /// in a `size_t`, not specifically the `int` type.
-size_t int_simple_hash(void* x);
+size_t int_simple_hash(size_t* x);
 
 /// Hashes the string by calculating a polynomial of based on its characters. If the pointer provided
 /// is null, the function panics.
-size_t str_simple_hash(void* val);
+size_t str_simple_hash(char* str);
 
 // TODO: more & better hashes
 

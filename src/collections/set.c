@@ -13,7 +13,7 @@ array_t hashset_alloc_buckets(size_t n_buckets) {
     array_init(&buckets, bucket_array, n_buckets, sizeof(list_t));
 
     for (size_t i = 0; i < n_buckets; i++) {
-        list_t* bucket = array_get(&buckets, i);
+        list_t* bucket = array_at(&buckets, i);
         ll_init(bucket);
     }
 
@@ -35,9 +35,9 @@ void hashset_init(hashset_t* set, size_t n_buckets, hash_fn_t hash_fn, int (*ele
     set->buckets = hashset_alloc_buckets(n_buckets);
 }
 
-void hashset_free(hashset_t* set, void (*elem_free)(void*)) {
+void hashset_free(hashset_t* set, free_fn_t elem_free) {
     for (size_t i = 0; i < set->buckets.len; i++) {
-        list_t* bucket = array_get(&set->buckets, i);
+        list_t* bucket = array_at(&set->buckets, i);
         ll_free(bucket, elem_free);
     }
 
@@ -56,7 +56,7 @@ void hashset_rehash(hashset_t* set) {
 
     // stick everything from old buckets to new
     for (size_t i = 0; i < old_buckets.len; i++) {
-        list_t* bucket = array_get(&old_buckets, i);
+        list_t* bucket = array_at(&old_buckets, i);
 
         while (!ll_is_empty(bucket)) {
             void* elem = ll_pop_first(bucket);
@@ -83,16 +83,16 @@ void hashset_insert(hashset_t* set, void* elem) {
     size_t bucket_index = hashset_bucket_index(set, elem);
 
     // find bucket
-    list_t* bucket = array_get(&set->buckets, bucket_index);
+    list_t* bucket = array_at(&set->buckets, bucket_index);
 
     // insert into bucket
     ll_append(bucket, elem);
     set->size += 1;
 }
 
-void hashset_remove(hashset_t* set, void* elem, void (*elem_free)(void*)) {
+void hashset_remove(hashset_t* set, void* elem, free_fn_t elem_free) {
     size_t bucket_index = hashset_bucket_index(set, elem);
-    list_t* bucket = array_get(&set->buckets, bucket_index);
+    list_t* bucket = array_at(&set->buckets, bucket_index);
 
     void* removed = ll_remove(bucket, elem, set->elem_eq);
 
@@ -107,7 +107,7 @@ void hashset_remove(hashset_t* set, void* elem, void (*elem_free)(void*)) {
 
 int hashset_contains(hashset_t* set, void* elem) {
     size_t bucket_index = hashset_bucket_index(set, elem);
-    list_t* bucket = array_get(&set->buckets, bucket_index);
+    list_t* bucket = array_at(&set->buckets, bucket_index);
 
     return ll_find(bucket, elem, set->elem_eq);
 }

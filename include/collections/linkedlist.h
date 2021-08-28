@@ -3,6 +3,8 @@
 
 #include <stdlib.h>
 
+#include "lfc/utils/mem.h"
+
 /// Implements a simple, singly-linked list. Elements can be inspected & inserted
 /// from the front & back of the list. Simple search & removal is also provided.
 
@@ -22,7 +24,7 @@ void ll_init(list_t* list);
 
 // Free the contents of the linked list, freeing each element according to the provided destructor
 // Note that the actual data pointer is not freed; the destructor must free it if necessary
-void ll_free(list_t* list, void (*elem_free)(void*));
+void ll_free(list_t* list, free_fn_t elem_free);
 
 // Returns a pointer to the first element of the list, if it exists
 void* ll_first(list_t* list);

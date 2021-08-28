@@ -58,7 +58,7 @@ void test_array_init_and_freed_correctly_with_elem_free() {
     assert_eq(array.len, len);
     assert_eq(array.elem_size, sizeof(struct something));
 
-    array_free(&array, &something_free);
+    array_free(&array, (free_fn_t)(&something_free));
 
     end_test();
 }
@@ -68,7 +68,7 @@ void test_first_index_accessed_correctly() {
     start_test();
 
     array_t array = alloc_int_data(3);
-    int* first = array_get(&array, 0);
+    int* first = array_at(&array, 0);
     assert_eq(*first, 0);
 
     array_free(&array, NULL);
@@ -81,7 +81,7 @@ void test_mid_index_accessed_correctly() {
     start_test();
 
     array_t array = alloc_int_data(3);
-    int* elem = array_get(&array, array.len / 2);
+    int* elem = array_at(&array, array.len / 2);
     assert_eq(*elem, 0);
 
     array_free(&array, NULL);
@@ -94,7 +94,7 @@ void test_last_index_accessed_correctly() {
     start_test();
 
     array_t array = alloc_int_data(3);
-    int* last = array_get(&array, array.len - 1);
+    int* last = array_at(&array, array.len - 1);
     assert_eq(*last, 0);
 
     array_free(&array, NULL);
@@ -102,7 +102,7 @@ void test_last_index_accessed_correctly() {
     end_test();
 }
 
-// array_get: out of bounds panic test?
+// array_at: out of bounds panic test?
 
 
 void test_first_index_modified_correctly() {
@@ -110,30 +110,28 @@ void test_first_index_modified_correctly() {
 
     /* --- Without cleanup --- */
     array_t int_array = alloc_int_data(3);
+    int new_int = 3;
+    *(int*)array_at(&int_array, 0) = new_int;
 
-    int* new_int = malloc_unwrap(sizeof(int), 1, "[array_tests] failed to alloc int");
-    *new_int = 3;
-    array_set(&int_array, 0, new_int, NULL);
-
-    int* first_int = array_get(&int_array, 0);
-    assert_eq(*first_int, *new_int);
+    int* first_int = array_at(&int_array, 0);
+    assert_eq(*first_int, new_int);
 
     array_free(&int_array, NULL);
-    free(new_int);
 
     /* --- With cleanup --- */
     array_t struct_array = alloc_struct_data(3);
 
-    struct something* new_struct = malloc_unwrap(sizeof(struct something), 1, "[array_tests] failed to alloc struct");
-    something_init(new_struct, 5);
+    struct something new_struct;
+    something_init(&new_struct, 5);
 
-    array_set(&struct_array, 0, new_struct, &something_free);
+    struct something* elem = array_at(&struct_array, 0);
+    something_free(elem);
+    *elem = new_struct;
 
-    struct something* first_struct = array_get(&struct_array, 0);
-    assert_eq(*(first_struct->n), *(new_struct->n));
+    struct something* first_struct = array_at(&struct_array, 0);
+    assert_eq(*(first_struct->n), *(new_struct.n));
 
-    array_free(&struct_array, NULL);
-    free(new_struct);
+    array_free(&struct_array, (free_fn_t)&something_free);
 
     end_test();
 }
@@ -145,31 +143,30 @@ void test_mid_index_modified_correctly() {
     /* --- Without cleanup --- */
     array_t int_array = alloc_int_data(3);
 
-    int* new = malloc_unwrap(sizeof(int), 1, "[array_tests] failed to alloc int");
-    *new = 3;
+    int new = 3;
     size_t index = int_array.len / 2;
-    array_set(&int_array, index, new, NULL);
+    *(int*)array_at(&int_array, index) = new;
 
-    int* elem = array_get(&int_array, index);
-    assert_eq(*elem, *new);
+    int* int_elem = array_at(&int_array, index);
+    assert_eq(*int_elem, new);
 
     array_free(&int_array, NULL);
-    free(new);
 
     /* --- With cleanup --- */
     array_t struct_array = alloc_struct_data(5);
 
-    struct something* new_struct = malloc_unwrap(sizeof(struct something), 1, "[array_tests] failed to alloc struct");
-    something_init(new_struct, 5);
+    struct something new_struct;
+    something_init(&new_struct, 5);
 
     size_t struct_index = 2;
-    array_set(&struct_array, struct_index, new_struct, &something_free);
+    struct something* elem = array_at(&struct_array, struct_index);
+    something_free(elem);
+    *elem = new_struct;
 
-    struct something* struct_elem = array_get(&struct_array, struct_index);
-    assert_eq(*(struct_elem->n), *(new_struct->n));
+    struct something* struct_elem = array_at(&struct_array, struct_index);
+    assert_eq(*(struct_elem->n), *(new_struct.n));
 
-    array_free(&struct_array, NULL);
-    free(new_struct);
+    array_free(&struct_array, (free_fn_t)&something_free);
 
     end_test();
 }
@@ -181,31 +178,30 @@ void test_last_index_modified_correctly() {
     /* --- Without cleanup --- */
     array_t int_array = alloc_int_data(3);
 
-    int* new = malloc_unwrap(sizeof(int), 1, "[array_tests] failed to alloc int");
-    *new = 3;
+    int new = 3;
     size_t index = int_array.len - 1;
-    array_set(&int_array, index, new, NULL);
+    *(int*)array_at(&int_array, index) = new;
 
-    int* elem = array_get(&int_array, index);
-    assert_eq(*elem, *new);
+    int* int_elem = array_at(&int_array, index);
+    assert_eq(*int_elem, new);
 
     array_free(&int_array, NULL);
-    free(new);
 
     /* --- With cleanup --- */
     array_t struct_array = alloc_struct_data(5);
 
-    struct something* new_struct = malloc_unwrap(sizeof(struct something), 1, "[array_tests] failed to alloc struct");
-    something_init(new_struct, 5);
+    struct something new_struct;
+    something_init(&new_struct, 5);
 
     size_t struct_index = struct_array.len - 1;
-    array_set(&struct_array, struct_index, new_struct, &something_free);
+    struct something* struct_elem = array_at(&struct_array, struct_index);
+    something_free(struct_elem);
+    *struct_elem = new_struct;
 
-    struct something* last_struct = array_get(&struct_array, struct_index);
-    assert_eq(*(last_struct->n), *(new_struct->n));
+    struct something* last_struct = array_at(&struct_array, struct_index);
+    assert_eq(*(last_struct->n), *(new_struct.n));
 
-    array_free(&struct_array, NULL);
-    free(new_struct);
+    array_free(&struct_array, (free_fn_t)&something_free);
 
     end_test();
 }
@@ -217,7 +213,7 @@ void test_find_elem_found_when_present() {
     array_t array = alloc_int_data(5);
 
     for (size_t i = 0; i < array.len; i++) {
-        int* val = array_get(&array, i);
+        int* val = array_at(&array, i);
         *val = i;
     }
 
@@ -240,7 +236,7 @@ void test_find_elem_not_found_when_missing() {
     array_t array = alloc_int_data(3);
 
     for (size_t i = 0; i < array.len; i++) {
-        int* val = array_get(&array, i);
+        int* val = array_at(&array, i);
         *val = i;
     }
 

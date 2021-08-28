@@ -1,14 +1,12 @@
 #include "lfc/utils/hash.h"
 #include "lfc/utils/panic.h"
 
-size_t int_simple_hash(void* x) {
+size_t int_simple_hash(size_t* x) {
     return *(size_t*)x;
 }
 
-size_t str_simple_hash(void* val) {
-    char* str;
-
-    if ((str = val) == NULL) {
+size_t str_simple_hash(char* str) {
+    if (str == NULL) {
         panic(1, "[str_simple_hash] str value must be non-null");
     }
 
