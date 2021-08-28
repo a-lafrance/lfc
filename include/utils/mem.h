@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 
-// TODO: generic free function type?
+typedef void (*free_fn_t)(void*);
 
 // Wrapper around malloc that panics on error
 void* malloc_unwrap(size_t elem_size, size_t elems, char* error_msg);

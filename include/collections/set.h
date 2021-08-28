@@ -2,7 +2,9 @@
 #define LFC_SET_HEADER
 
 #include "lfc/collections/array.h"
+
 #include "lfc/utils/hash.h"
+#include "lfc/utils/mem.h"
 
 #include <stdlib.h>
 
@@ -25,13 +27,13 @@ void hashset_init(hashset_t* set, size_t n_buckets, hash_fn_t hash_fn, int (*ele
 
 // Free the contents of the set
 // Elements are not assumed to be dynamically allocated, so they must be freed manually if necessary
-void hashset_free(hashset_t* set, void (*elem_free)(void*));
+void hashset_free(hashset_t* set, free_fn_t elem_free);
 
 // Insert an element into the set
 void hashset_insert(hashset_t* set, void* elem);
 
 // Remove an element from the set
-void hashset_remove(hashset_t* set, void* elem, void (*elem_free)(void*));
+void hashset_remove(hashset_t* set, void* elem, free_fn_t elem_free);
 
 // Check whether or not the set contains the given element
 int hashset_contains(hashset_t* set, void* elem);

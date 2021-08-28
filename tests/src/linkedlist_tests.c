@@ -66,7 +66,7 @@ void test_append_and_free_single_value_with_cleanup() {
     struct something* first = ll_first(&list);
     assert_eq(*first->n, *thing->n);
 
-    ll_free(&list, &something_free);
+    ll_free(&list, (free_fn_t)&something_free);
 
     end_test();
 }
@@ -128,7 +128,7 @@ void test_append_and_free_many_values_with_cleanup() {
         i++;
     }
 
-    ll_free(&list, &something_free);
+    ll_free(&list, (free_fn_t)&something_free);
 
     end_test();
 }
@@ -165,7 +165,7 @@ void test_prepend_and_free_single_value_with_cleanup() {
     struct something* first = ll_first(&list);
     assert_eq(*first->n, *thing->n);
 
-    ll_free(&list, &something_free);
+    ll_free(&list, (free_fn_t)&something_free);
 
     end_test();
 }
@@ -227,7 +227,7 @@ void test_prepend_and_free_many_values_with_cleanup() {
         i--;
     }
 
-    ll_free(&list, &something_free);
+    ll_free(&list, (free_fn_t)&something_free);
 
     end_test();
 }

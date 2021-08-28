@@ -14,7 +14,7 @@ void something_init_zeroed(struct something* thing) {
     thing->n = calloc_unwrap(sizeof(int), 1, "[struct something] failed to alloc int field");
 }
 
-void something_free(void* thing) {
+void something_free(struct something* thing) {
     struct something* something = thing;
     free(something->n);
 }
@@ -27,6 +27,6 @@ int str_eq(void* lhs, void* rhs) {
     return strcmp(lhs, rhs) == 0;
 }
 
-void str_free(void* str) {
+void str_free(char* str) {
     free(str);
 }

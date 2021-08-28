@@ -17,26 +17,27 @@ liblfc:
 
 lfc_tests:
 	$(MAKE) liblfc proper_include
-	cd $(TARGET_DIR) && $(CC) $(TESTS_CFLAGS)     \
-		../$(TESTS_DIR)/array_tests.c         \
-		../$(TESTS_DIR)/linkedlist_tests.c    \
-		../$(TESTS_DIR)/set_tests.c           \
-		../$(TESTS_DIR)/hash_tests.c          \
-		../$(TESTS_DIR)/utils.c               \
+	cd $(TARGET_DIR) && $(CC) $(TESTS_CFLAGS)  \
+		../$(TESTS_DIR)/array_tests.c          \
+		../$(TESTS_DIR)/linkedlist_tests.c     \
+		../$(TESTS_DIR)/set_tests.c            \
+		../$(TESTS_DIR)/hash_tests.c           \
+		../$(TESTS_DIR)/utils.c                \
 		../$(TESTS_DIR)/main.c
 	$(MAKE) undo_proper_include
 
 collections:
 	mkdir -p $(TARGET_DIR)
-	cd $(TARGET_DIR) && $(CC) $(CFLAGS)            \
+	cd $(TARGET_DIR) && $(CC) $(CFLAGS)        \
 		../$(SRC_DIR)/collections/array.c      \
 		../$(SRC_DIR)/collections/linkedlist.c \
-		../$(SRC_DIR)/collections/set.c
+		../$(SRC_DIR)/collections/set.c        \
+		../$(SRC_DIR)/collections/vector.c     \
 
 utils:
 	mkdir -p $(TARGET_DIR)
-	cd $(TARGET_DIR) && $(CC) $(CFLAGS)     \
-		../$(SRC_DIR)/utils/mem.c       \
+	cd $(TARGET_DIR) && $(CC) $(CFLAGS)  \
+		../$(SRC_DIR)/utils/mem.c        \
 		../$(SRC_DIR)/utils/hash.c
 
 proper_include:
@@ -45,7 +46,7 @@ proper_include:
 	mv $(INCLUDE_DIR)/utils $(INCLUDE_DIR)/lfc
 
 # QUIP: this is ridiculously inefficient for large projects so there has to be a better way
-#       symlink every file rather than every directory? yikes
+#       stitch this together right? yikes
 undo_proper_include:
 	mv $(INCLUDE_DIR)/lfc/collections $(INCLUDE_DIR)
 	mv $(INCLUDE_DIR)/lfc/utils $(INCLUDE_DIR)

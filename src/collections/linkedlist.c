@@ -14,7 +14,7 @@ void ll_init(list_t* list) {
     list->len = 0;
 }
 
-void ll_free(list_t* list, void (*elem_free)(void*)) {
+void ll_free(list_t* list, free_fn_t elem_free) {
     struct ll_node* current = list->head;
 
     while (current != NULL) {

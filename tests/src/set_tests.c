@@ -19,9 +19,9 @@ void test_hashset_init_and_freed_correctly_no_cleanup() {
     start_test();
 
     hashset_t set;
-    hashset_init(&set, DEFAULT_BUCKETS, &int_simple_hash, &int_eq);
+    hashset_init(&set, DEFAULT_BUCKETS, (hash_fn_t)&int_simple_hash, &int_eq);
 
-    assert_eq(set.hash_fn, &int_simple_hash);
+    assert_eq(set.hash_fn, (hash_fn_t)&int_simple_hash);
     assert_eq(set.elem_eq, &int_eq);
     assert_eq(set.buckets.len, DEFAULT_BUCKETS);
     assert_eq(set.size, 0);
@@ -40,9 +40,9 @@ void test_hashset_init_and_freed_correctly_with_cleanup() {
     start_test();
 
     hashset_t set;
-    hashset_init(&set, DEFAULT_BUCKETS, &str_simple_hash, &str_eq);
+    hashset_init(&set, DEFAULT_BUCKETS, (hash_fn_t)&str_simple_hash, &str_eq);
 
-    assert_eq(set.hash_fn, &str_simple_hash);
+    assert_eq(set.hash_fn, (hash_fn_t)&str_simple_hash);
     assert_eq(set.elem_eq, &str_eq);
     assert_eq(set.buckets.len, DEFAULT_BUCKETS);
     assert_eq(set.size, 0);
@@ -50,7 +50,7 @@ void test_hashset_init_and_freed_correctly_with_cleanup() {
     assert(hashset_is_empty(&set));
     assert_false(hashset_contains(&set, "hello world"));
 
-    hashset_free(&set, &str_free);
+    hashset_free(&set, (free_fn_t)&str_free);
 
     end_test();
 }
@@ -59,7 +59,7 @@ void test_hashset_insert_into_empty_set() {
     start_test();
 
     hashset_t set;
-    hashset_init(&set, DEFAULT_BUCKETS, &int_simple_hash, &int_eq);
+    hashset_init(&set, DEFAULT_BUCKETS, (hash_fn_t)&int_simple_hash, &int_eq);
 
     int* value = calloc_unwrap(sizeof(int), 1, "[hashset_tests] failed to alloc int value");
     hashset_insert(&set, value);
@@ -78,7 +78,7 @@ void test_hashset_insert_into_nonempty_set() {
     start_test();
 
     hashset_t set;
-    hashset_init(&set, DEFAULT_BUCKETS, &int_simple_hash, &int_eq);
+    hashset_init(&set, DEFAULT_BUCKETS, (hash_fn_t)&int_simple_hash, &int_eq);
 
     int n = DEFAULT_BUCKETS * MAX_LOAD_FACTOR;
 
@@ -105,7 +105,7 @@ void test_hashset_remove_from_one_elem_set_no_cleanup() {
     start_test();
 
     hashset_t set;
-    hashset_init(&set, DEFAULT_BUCKETS, &int_simple_hash, &int_eq);
+    hashset_init(&set, DEFAULT_BUCKETS, (hash_fn_t)&int_simple_hash, &int_eq);
 
     int* elem = malloc_unwrap(sizeof(int), 1, "[hashset_tests] failed to alloc int value");
     *elem = 3;
@@ -127,20 +127,20 @@ void test_hashset_remove_from_one_elem_set_with_cleanup() {
     start_test();
 
     hashset_t set;
-    hashset_init(&set, DEFAULT_BUCKETS, &str_simple_hash, &str_eq);
+    hashset_init(&set, DEFAULT_BUCKETS, (hash_fn_t)&str_simple_hash, &str_eq);
 
     char* str = "hello world";
     char* elem = malloc_unwrap(sizeof(char), strlen(str) + 1, "[hashset_tests] failed to alloc str value");
     strcpy(elem, str);
 
     hashset_insert(&set, elem);
-    hashset_remove(&set, elem, &str_free);
+    hashset_remove(&set, elem, (free_fn_t)&str_free);
 
     assert_eq(set.size, 0);
     assert(hashset_is_empty(&set));
     assert_eq(hashset_load_factor(&set), 0);
 
-    hashset_free(&set, &str_free);
+    hashset_free(&set, (free_fn_t)&str_free);
 
     end_test();
 }
@@ -149,7 +149,7 @@ void test_hashset_remove_from_many_elem_set_no_cleanup() {
     start_test();
 
     hashset_t set;
-    hashset_init(&set, DEFAULT_BUCKETS, &int_simple_hash, &int_eq);
+    hashset_init(&set, DEFAULT_BUCKETS, (hash_fn_t)&int_simple_hash, &int_eq);
 
     int n = 5;
     int* value;
@@ -173,7 +173,7 @@ void test_hashset_remove_from_many_elem_set_with_cleanup() {
     start_test();
 
     hashset_t set;
-    hashset_init(&set, DEFAULT_BUCKETS, &str_simple_hash, &str_eq);
+    hashset_init(&set, DEFAULT_BUCKETS, (hash_fn_t)&str_simple_hash, &str_eq);
 
     char* strs[4] = {"hello", "world", "asg", "acya"};
     int n_strs = 4;
@@ -186,10 +186,10 @@ void test_hashset_remove_from_many_elem_set_with_cleanup() {
     }
 
     char* to_remove = strs[0];
-    hashset_remove(&set, to_remove, &str_free);
+    hashset_remove(&set, to_remove, (free_fn_t)&str_free);
     assert_false(hashset_contains(&set, to_remove));
 
-    hashset_free(&set, &str_free);
+    hashset_free(&set, (free_fn_t)&str_free);
 
     end_test();
 }
@@ -198,7 +198,7 @@ void test_hashset_nonempty_set_doesnt_contain_missing_value() {
     start_test();
 
     hashset_t set;
-    hashset_init(&set, DEFAULT_BUCKETS, &int_simple_hash, &int_eq);
+    hashset_init(&set, DEFAULT_BUCKETS, (hash_fn_t)&int_simple_hash, &int_eq);
 
     int* value = calloc_unwrap(sizeof(int), 1, "[hashset_tests] failed to alloc int value");
     hashset_insert(&set, value);
