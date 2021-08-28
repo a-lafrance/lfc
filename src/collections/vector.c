@@ -3,9 +3,10 @@
 #include <stdlib.h>
 
 #include "lfc/utils/mem.h"
+#include "lfc/utils/panic.h"
 
 void vec_init(vector_t* vec, size_t elem_size, size_t capacity) {
-    vec->data = malloc_unwrap(elem_size, capacity, "[vector_t] failed to alloc vector data");
+    vec->data = malloc_unwrap(elem_size, capacity, "[vec_init] failed to alloc vector data");
     vec->elem_size = elem_size;
     vec->len = 0;
     vec->capacity = capacity;
@@ -16,20 +17,44 @@ void vec_new(vector_t* vec, size_t elem_size) {
 }
 
 void vec_free(vector_t* vec, free_fn_t elem_free) {
-    // free dyn data
-    // call elem free on each one
+    if (elem_free != NULL) {
+        for (size_t i = 0; i < len; i++) {
+            void* elem = vec_at(vec, i);
+            elem_free(elem);
+        }
+    }
+
+    free(vec->data);
 }
 
 void* vec_at(vector_t* vec, size_t index) {
-    // get the pointer
-    return NULL;
+    if (index >= vec->len) {
+        panic(1, "[vec_at] index %li out of bounds for vector of length %li", index, vec->len);
+    }
+
+    return vec->data + index * vec->elem_size;
 }
 
-void vec_append(vector_t* vec, void* elem) {
-    // stick the thing at the end, expand if necessary
+void vec_append(vector_t* vec, void* val) {
+    if (vec->len == vec->capacity) {
+        vec->capacity *= 2
+        vec->data = realloc_unwrap(
+            vec->data, vec->elem_size, vec->capacity,
+            "[vec_append] unable to expand vector"
+        );
+    }
+
+    void* elem = vec_at(vec, vec->len);
+    memcpy(elem, val, vec->elem_size);
+    vec->len += 1;
 }
 
-void* vec_pop(vector_t* vec) {
-    // pop the first thing off (how to return result?)
-    return NULL;
+void vec_pop(vector_t* vec, void* val) {
+    if (vec->len == 0) {
+        panic(1, "[vec_pop] can't pop from empty vector");
+    }
+
+    void* elem = vec_at(vec, vec->len - 1);
+    memcpy(val, elem, vec->elem_size);
+    vec->len -= 1;
 }
