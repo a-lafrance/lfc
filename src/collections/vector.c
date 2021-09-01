@@ -1,6 +1,8 @@
 #include "lfc/collections/vector.h"
 
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "lfc/utils/mem.h"
 #include "lfc/utils/panic.h"
@@ -18,7 +20,7 @@ void vec_new(vector_t* vec, size_t elem_size) {
 
 void vec_free(vector_t* vec, free_fn_t elem_free) {
     if (elem_free != NULL) {
-        for (size_t i = 0; i < len; i++) {
+        for (size_t i = 0; i < vec->len; i++) {
             void* elem = vec_at(vec, i);
             elem_free(elem);
         }
@@ -35,16 +37,20 @@ void* vec_at(vector_t* vec, size_t index) {
     return vec->data + index * vec->elem_size;
 }
 
+uint8_t vec_is_empty(vector_t* vec) {
+    return vec->len == 0;
+}
+
 void vec_append(vector_t* vec, void* val) {
     if (vec->len == vec->capacity) {
-        vec->capacity *= 2
+        vec->capacity *= 2;
         vec->data = realloc_unwrap(
             vec->data, vec->elem_size, vec->capacity,
             "[vec_append] unable to expand vector"
         );
     }
 
-    void* elem = vec_at(vec, vec->len);
+    void* elem = vec->data + vec->len * vec->elem_size;
     memcpy(elem, val, vec->elem_size);
     vec->len += 1;
 }

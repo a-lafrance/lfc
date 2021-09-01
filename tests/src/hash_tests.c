@@ -1,5 +1,3 @@
-#include "hash_tests.h"
-
 #include "setup.h"
 #include "assert.h"
 
