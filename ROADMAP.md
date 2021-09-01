@@ -1,7 +1,7 @@
 # Roadmap
 
 ## Collections
-- [ ] Vectors (array lists)
+- [x] Vectors (array lists)
 - [ ] Owned strings (think Rust's `String` type, as an alternative to bare `char*`)
 - [ ] Maps (hash- and tree-based)
 - [ ] Slicing
