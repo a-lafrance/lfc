@@ -22,6 +22,7 @@ lfc_tests:
 		../$(TESTS_DIR)/linkedlist_tests.c     \
 		../$(TESTS_DIR)/set_tests.c            \
 		../$(TESTS_DIR)/hash_tests.c           \
+		../$(TESTS_DIR)/vector_tests.c         \
 		../$(TESTS_DIR)/utils.c                \
 		../$(TESTS_DIR)/main.c
 	$(MAKE) undo_proper_include
@@ -32,7 +33,7 @@ collections:
 		../$(SRC_DIR)/collections/array.c      \
 		../$(SRC_DIR)/collections/linkedlist.c \
 		../$(SRC_DIR)/collections/set.c        \
-		../$(SRC_DIR)/collections/vector.c     \
+		../$(SRC_DIR)/collections/vector.c
 
 utils:
 	mkdir -p $(TARGET_DIR)
