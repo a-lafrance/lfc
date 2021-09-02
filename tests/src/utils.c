@@ -23,10 +23,10 @@ int int_eq(void* lhs, void* rhs) {
    return *(int*)lhs == *(int*)rhs;
 }
 
-int str_eq(void* lhs, void* rhs) {
+int strlit_eq(void* lhs, void* rhs) {
     return strcmp(lhs, rhs) == 0;
 }
 
-void str_free(char* str) {
+void strlit_free(char* str) {
     free(str);
 }
