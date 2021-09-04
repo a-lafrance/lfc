@@ -80,7 +80,7 @@ void test_vec_value_appended_and_retrieved_correctly_no_cleanup() {
     vec_new(&vec, sizeof(int));
 
     int n = 3;
-    vec_append(&vec, &n);
+    vec_push(&vec, &n);
     assert_eq(vec.len, 1);
     assert_eq(vec.capacity, VEC_DEFAULT_CAPACITY);
     assert_false(vec_is_empty(&vec));
@@ -101,7 +101,7 @@ void test_vec_value_appended_and_retrieved_correctly_with_cleanup() {
 
     struct something s;
     something_init(&s, 3);
-    vec_append(&vec, &s);
+    vec_push(&vec, &s);
 
     assert_eq(vec.len, 1);
     assert_eq(vec.capacity, VEC_DEFAULT_CAPACITY);
@@ -125,7 +125,7 @@ void test_vec_many_values_appended_and_retrieved_correctly_no_cleanup() {
     int numbers[n];
     for (size_t i = 0; i < n; i++) {
         numbers[i] = i;
-        vec_append(&vec, &numbers[i]);
+        vec_push(&vec, &numbers[i]);
 
         assert_eq(vec.len, i + 1);
         assert_eq(vec.capacity, VEC_DEFAULT_CAPACITY);
@@ -152,7 +152,7 @@ void test_vec_many_values_appended_and_retrieved_correctly_with_cleanup() {
     struct something s[n];
     for (size_t i = 0; i < n; i++) {
         something_init(&s[i], i);
-        vec_append(&vec, &s[i]);
+        vec_push(&vec, &s[i]);
 
         assert_eq(vec.len, i + 1);
         assert_eq(vec.capacity, VEC_DEFAULT_CAPACITY);
@@ -179,7 +179,7 @@ void test_vec_values_appended_and_expanded_correctly_no_cleanup() {
     int numbers[n];
     for (size_t i = 0; i < n; i++) {
         numbers[i] = i;
-        vec_append(&vec, &numbers[i]);
+        vec_push(&vec, &numbers[i]);
 
         assert_eq(vec.len, i + 1);
         assert_eq(vec.capacity, i == n - 1 ? 2 * VEC_DEFAULT_CAPACITY : VEC_DEFAULT_CAPACITY);
@@ -206,7 +206,7 @@ void test_vec_values_appended_and_expanded_correctly_with_cleanup() {
     struct something items[n];
     for (size_t i = 0; i < n; i++) {
         something_init(items + i, i);
-        vec_append(&vec, items + i);
+        vec_push(&vec, items + i);
 
         assert_eq(vec.len, i + 1);
         assert_eq(vec.capacity, i == n - 1 ? 2 * VEC_DEFAULT_CAPACITY : VEC_DEFAULT_CAPACITY);
@@ -230,7 +230,7 @@ void test_vec_pop_from_one_elem_makes_empty() {
     vec_new(&vec, sizeof(int));
 
     int n = 3;
-    vec_append(&vec, &n);
+    vec_push(&vec, &n);
 
     int popped;
     vec_pop(&vec, &popped);
@@ -252,7 +252,7 @@ void test_vec_pop_from_many_elems_shortens_correctly() {
     int numbers[n];
     for (size_t i = 0; i < n; i++) {
         numbers[i] = i;
-        vec_append(&vec, &numbers[i]);
+        vec_push(&vec, &numbers[i]);
     }
 
     int popped;
