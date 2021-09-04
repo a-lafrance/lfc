@@ -41,12 +41,12 @@ uint8_t vec_is_empty(vector_t* vec) {
     return vec->len == 0;
 }
 
-void vec_append(vector_t* vec, void* val) {
+void vec_push(vector_t* vec, void* val) {
     if (vec->len == vec->capacity) {
         vec->capacity *= 2;
         vec->data = realloc_unwrap(
             vec->data, vec->elem_size, vec->capacity,
-            "[vec_append] unable to expand vector"
+            "[vec_push] unable to expand vector"
         );
     }
 
