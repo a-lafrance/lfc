@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "lfc/utils/mem.h"
+#include "lfc/utils/panic.h"
 
 void str_init(str_t* str) {
     str->capacity = STR_DEFAULT_CAPACITY;
@@ -72,9 +73,9 @@ uint8_t str_is_empty(str_t* str) {
 }
 
 uint8_t str_starts_with(str_t* str, char c) {
-    return str->len > 0 && str[0] == c;
+    return str->len > 0 && str_get(str, 0) == c;
 }
 
 uint8_t str_ends_with(str_t* str, char c) {
-    return str->len > 0 && str[str->len - 1] == c;
+    return str->len > 0 && str_get(str, str->len - 1) == c;
 }

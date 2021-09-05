@@ -4,6 +4,7 @@
 // is str really a collection? i mean kind of
 
 #include <stdint.h>
+#include <stdlib.h>
 
 #define STR_DEFAULT_CAPACITY (size_t)32
 
