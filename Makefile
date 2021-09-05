@@ -17,24 +17,24 @@ liblfc:
 
 lfc_tests:
 	$(MAKE) liblfc proper_include
-	cd $(TARGET_DIR) && $(CC) $(TESTS_CFLAGS)  \
-		../$(TESTS_DIR)/array_tests.c          \
-		../$(TESTS_DIR)/hash_tests.c           \
-		../$(TESTS_DIR)/linkedlist_tests.c     \
-		../$(TESTS_DIR)/set_tests.c            \
-		../$(TESTS_DIR)/str_tests.c            \
-		../$(TESTS_DIR)/vector_tests.c         \
-		../$(TESTS_DIR)/utils.c                \
+	cd $(TARGET_DIR) && $(CC) $(TESTS_CFLAGS)           \
+		../$(TESTS_DIR)/collections/array_tests.c       \
+		../$(TESTS_DIR)/collections/linkedlist_tests.c  \
+		../$(TESTS_DIR)/collections/set_tests.c         \
+		../$(TESTS_DIR)/collections/str_tests.c         \
+		../$(TESTS_DIR)/collections/vector_tests.c      \
+		../$(TESTS_DIR)/utils/hash_tests.c              \
+		../$(TESTS_DIR)/utils.c                         \
 		../$(TESTS_DIR)/main.c
 	$(MAKE) undo_proper_include
 
 collections:
 	mkdir -p $(TARGET_DIR)
-	cd $(TARGET_DIR) && $(CC) $(CFLAGS)        \
-		../$(SRC_DIR)/collections/array.c      \
-		../$(SRC_DIR)/collections/linkedlist.c \
-		../$(SRC_DIR)/collections/set.c        \
-		../$(SRC_DIR)/collections/str.c        \
+	cd $(TARGET_DIR) && $(CC) $(CFLAGS)         \
+		../$(SRC_DIR)/collections/array.c       \
+		../$(SRC_DIR)/collections/linkedlist.c  \
+		../$(SRC_DIR)/collections/set.c         \
+		../$(SRC_DIR)/collections/str.c         \
 		../$(SRC_DIR)/collections/vector.c
 
 utils:
@@ -48,7 +48,7 @@ proper_include:
 	mv $(INCLUDE_DIR)/collections $(INCLUDE_DIR)/lfc
 	mv $(INCLUDE_DIR)/utils $(INCLUDE_DIR)/lfc
 
-# QUIP: this is ridiculously inefficient for large projects so there has to be a better way
+# FIXME: this is ridiculously inefficient for large projects so there has to be a better way
 #       stitch this together right? yikes
 undo_proper_include:
 	mv $(INCLUDE_DIR)/lfc/collections $(INCLUDE_DIR)
