@@ -2,13 +2,14 @@
 
 ## Collections
 - [x] Vectors (array lists)
-- [ ] Owned strings (think Rust's `String` type, as an alternative to bare `char*`)
-- [ ] Maps (hash- and tree-based)
+- [x] Owned strings (think Rust's `String` type, as an alternative to bare `char*` for string literals)
+- [ ] Hash maps
 - [ ] Slicing
 - [ ] Greater variety of linked lists (e.g. doubly-linked)
 - [ ] Stacks
 - [ ] Queues
 - [ ] Tree-based sets
+- [ ] Tree-based maps
 - [ ] Heaps
 
 ## Other Ideas (may or may not ever materialize)
