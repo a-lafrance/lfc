@@ -32,7 +32,7 @@ void test_str_init_from_literal_correctly() {
     assert_eq(str.len, text_len);
     assert_eq(str.capacity, STR_DEFAULT_CAPACITY + text_len); // impl detail?
     assert_false(str_is_empty(&str));
-    assert(strncmp(str.data, text, text_len) == 0);
+    assert(strncmp(str.buffer, text, text_len) == 0);
 
     str_free(&str);
 
@@ -80,7 +80,7 @@ void test_str_pushed_strs_correctly() {
         assert_eq(str.len, i);
         assert_eq(str.capacity, str.capacity > STR_DEFAULT_CAPACITY ? 2 * STR_DEFAULT_CAPACITY : STR_DEFAULT_CAPACITY);
         assert_false(str_is_empty(&str));
-        assert(strncmp(str.data + i, text.data, text.len));
+        assert(strncmp(str.buffer + i, text.buffer, text.len));
     }
 
     str_free(&str);
