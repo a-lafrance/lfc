@@ -6,26 +6,6 @@
 #include "lfc/collections/array.h"
 #include "lfc/utils/hash.h"
 #include "lfc/utils/mem.h"
-#include "lfc/utils/pair.h"
-
-// A very limited subset of a linked list to avoid the overhead of list_t
-struct mapbucket_node {
-    struct mapbucket_node* next;
-    pair_t data;
-};
-
-void mapbucket_init(struct mapbucket_node* head);
-void mapbucket_free(struct mapbucket_node* head, free_fn_t key_free, free_fn_t val_free);
-
-void mapbucket_first(struct mapbucket_node* head);
-void mapbucket_prepend(struct mapbucket_node* head, pair_t data);
-
-void mapbucket_pop_first(struct mapbucket_node* head);
-void mapbucket_remove(struct mapbucket_node* head, void* key, int (*key_eq)(void*, void*));
-
-uint8_t mapbucket_find(struct mapbucket_node* head, void* key, int (*key_eq)(void*, void*));
-uint8_t mapbucket_is_empty(struct mapbucket_node* head);
-
 
 typedef struct {
     hash_fn_t hash_fn;

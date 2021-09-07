@@ -113,6 +113,7 @@ void* ll_remove(list_t* list, void* target, int (*elem_eq)(void*, void*)) {
                 list->tail = NULL;
             }
 
+            // FIXME: node not freed
             list->len -= 1;
 
             return elem;
