@@ -33,6 +33,7 @@ collections:
 	cd $(TARGET_DIR) && $(CC) $(CFLAGS)         \
 		../$(SRC_DIR)/collections/array.c       \
 		../$(SRC_DIR)/collections/linkedlist.c  \
+		../$(SRC_DIR)/collections/map.c         \
 		../$(SRC_DIR)/collections/set.c         \
 		../$(SRC_DIR)/collections/str.c         \
 		../$(SRC_DIR)/collections/vector.c
@@ -40,8 +41,9 @@ collections:
 utils:
 	mkdir -p $(TARGET_DIR)
 	cd $(TARGET_DIR) && $(CC) $(CFLAGS)  \
+		../$(SRC_DIR)/utils/hash.c       \
 		../$(SRC_DIR)/utils/mem.c        \
-		../$(SRC_DIR)/utils/hash.c
+		../$(SRC_DIR)/utils/pair.c
 
 proper_include:
 	mkdir -p $(INCLUDE_DIR)/lfc
