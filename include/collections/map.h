@@ -20,7 +20,8 @@ void hashmap_free(hashmap_t* map, free_fn_t key_free, free_fn_t val_free);
 void* hashmap_get(hashmap_t* map, void* key);
 uint8_t hashmap_contains(hashmap_t* map, void* key);
 
-void hashmap_insert(hashmap_t* map, void* key, void* val);
+void hashmap_set(hashmap_t* map, void* key, void* value, free_fn_t val_free);
+uint8_t hashmap_insert(hashmap_t* map, void* key, void* val);
 void hashmap_remove(hashmap_t* map, void* key, free_fn_t key_free, free_fn_t val_free);
 
 uint8_t hashmap_is_empty(hashmap_t* map);
