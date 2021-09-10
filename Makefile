@@ -1,4 +1,5 @@
 INCLUDE_DIR = include
+INTERNAL_INCLUDE_DIR = internal
 SRC_DIR = src
 TARGET_DIR = target
 TESTS_DIR = tests/src
@@ -46,15 +47,27 @@ utils:
 		../$(SRC_DIR)/utils/pair.c
 
 proper_include:
+	# make proper include dir
 	mkdir -p $(INCLUDE_DIR)/lfc
+
+	# move external headers
 	mv $(INCLUDE_DIR)/collections $(INCLUDE_DIR)/lfc
 	mv $(INCLUDE_DIR)/utils $(INCLUDE_DIR)/lfc
+
+	# move internal headers
+	mv $(INTERNAL_INCLUDE_DIR)/collections $(INCLUDE_DIR)/lfc/collections/internal
 
 # FIXME: this is ridiculously inefficient for large projects so there has to be a better way
 #       stitch this together right? yikes
 undo_proper_include:
+	# move internal headers back
+	mv $(INCLUDE_DIR)/lfc/collections/internal $(INTERNAL_INCLUDE_DIR)/collections
+
+	# move external headers back
 	mv $(INCLUDE_DIR)/lfc/collections $(INCLUDE_DIR)
 	mv $(INCLUDE_DIR)/lfc/utils $(INCLUDE_DIR)
+
+	# remove empty dir
 	-rm -rf $(INCLUDE_DIR)/lfc
 
 clean:
