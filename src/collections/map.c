@@ -37,7 +37,7 @@ void* hashmap_get(hashmap_t* map, void* key) {
     return __mapbucket_find(bucket, key, map->key_eq);
 }
 
-void hashmap_set(hashmap_t* map, void* target_key, void* new_value, free_fn_t val_free) {
+uint8_t hashmap_set(hashmap_t* map, void* target_key, void* new_value, free_fn_t val_free) {
     size_t bucket_index = hashmap_bucket(map, target_key);
     struct __mapbucket* bucket = array_at(&map->buckets, bucket_index);
 
@@ -48,11 +48,12 @@ void hashmap_set(hashmap_t* map, void* target_key, void* new_value, free_fn_t va
         if ((map->key_eq)(key, target_key)) {
             node->data.second = new_value;
             val_free(value);
-            return;
+
+            return 1;
         }
     }
 
-    __mapbucket_prepend(bucket, target_key, new_value);
+    return 0;
 }
 
 uint8_t hashmap_contains(hashmap_t* map, void* key) {

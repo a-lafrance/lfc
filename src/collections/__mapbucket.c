@@ -39,20 +39,6 @@ void __mapbucket_prepend(struct __mapbucket* bucket, void* key, void* val) {
     bucket->head = node;
 }
 
-void* __mapbucket_pop_first(struct __mapbucket* bucket) {
-    if (bucket->head == NULL) {
-        panic(1, "can't pop from empty __mapbucket");
-    }
-
-    struct __mapbucket_node* node = bucket->head;
-    pair_t pair = node->data;
-
-    bucket->head = node->next;
-    __mapbucket_node_free(node, NULL, NULL);
-
-    return pair.second;
-}
-
 void __mapbucket_remove(struct __mapbucket* bucket, void* target_key, int (*key_eq)(void*, void*), free_fn_t key_free, free_fn_t val_free) {
     struct __mapbucket_node* prev = NULL;
 
