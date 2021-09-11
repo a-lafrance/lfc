@@ -28,10 +28,13 @@ char str_pop(str_t* str, char c);
 char str_get(str_t* str, size_t index);
 char* str_at(str_t* str, size_t index);
 
+// TODO: test
+uint8_t str_eq(str_t* str, str_t* other);
 uint8_t str_is_empty(str_t* str);
-
 uint8_t str_starts_with(str_t* str, char c);
 uint8_t str_ends_with(str_t* str, char c);
+
+size_t str_simple_hash(str_t* str);
 
 // pending slicing:
     // trim

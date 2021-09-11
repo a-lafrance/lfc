@@ -14,10 +14,6 @@ void __mapbucket_node_free(struct __mapbucket_node* node, free_fn_t key_free, fr
     free(node);
 }
 
-struct __mapbucket {
-    struct __mapbucket_node* head;
-};
-
 void __mapbucket_init(struct __mapbucket* bucket) {
     bucket->head = NULL;
 }

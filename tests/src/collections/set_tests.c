@@ -38,17 +38,17 @@ void test_hashset_init_and_freed_correctly_with_cleanup() {
     start_test();
 
     hashset_t set;
-    hashset_init(&set, DEFAULT_BUCKETS, (hash_fn_t)&str_simple_hash, &strlit_eq);
+    hashset_init(&set, DEFAULT_BUCKETS, (hash_fn_t)&barestr_simple_hash, &barestr_eq);
 
-    assert_eq(set.hash_fn, (hash_fn_t)&str_simple_hash);
-    assert_eq(set.elem_eq, &strlit_eq);
+    assert_eq(set.hash_fn, (hash_fn_t)&barestr_simple_hash);
+    assert_eq(set.elem_eq, &barestr_eq);
     assert_eq(set.buckets.len, DEFAULT_BUCKETS);
     assert_eq(set.size, 0);
     assert_eq(hashset_load_factor(&set), 0);
     assert(hashset_is_empty(&set));
     assert_false(hashset_contains(&set, "hello world"));
 
-    hashset_free(&set, (free_fn_t)&strlit_free);
+    hashset_free(&set, (free_fn_t)&barestr_free);
 
     end_test();
 }
@@ -125,20 +125,20 @@ void test_hashset_remove_from_one_elem_set_with_cleanup() {
     start_test();
 
     hashset_t set;
-    hashset_init(&set, DEFAULT_BUCKETS, (hash_fn_t)&str_simple_hash, &strlit_eq);
+    hashset_init(&set, DEFAULT_BUCKETS, (hash_fn_t)&barestr_simple_hash, &barestr_eq);
 
     char* str = "hello world";
     char* elem = malloc_unwrap(sizeof(char), strlen(str) + 1, "[hashset_tests] failed to alloc str value");
     strcpy(elem, str);
 
     hashset_insert(&set, elem);
-    hashset_remove(&set, elem, (free_fn_t)&strlit_free);
+    hashset_remove(&set, elem, (free_fn_t)&barestr_free);
 
     assert_eq(set.size, 0);
     assert(hashset_is_empty(&set));
     assert_eq(hashset_load_factor(&set), 0);
 
-    hashset_free(&set, (free_fn_t)&strlit_free);
+    hashset_free(&set, (free_fn_t)&barestr_free);
 
     end_test();
 }
@@ -171,7 +171,7 @@ void test_hashset_remove_from_many_elem_set_with_cleanup() {
     start_test();
 
     hashset_t set;
-    hashset_init(&set, DEFAULT_BUCKETS, (hash_fn_t)&str_simple_hash, &strlit_eq);
+    hashset_init(&set, DEFAULT_BUCKETS, (hash_fn_t)&barestr_simple_hash, &barestr_eq);
 
     char* strs[4] = {"hello", "world", "asg", "acya"};
     int n_strs = 4;
@@ -184,10 +184,10 @@ void test_hashset_remove_from_many_elem_set_with_cleanup() {
     }
 
     char* to_remove = strs[0];
-    hashset_remove(&set, to_remove, (free_fn_t)&strlit_free);
+    hashset_remove(&set, to_remove, (free_fn_t)&barestr_free);
     assert_false(hashset_contains(&set, to_remove));
 
-    hashset_free(&set, (free_fn_t)&strlit_free);
+    hashset_free(&set, (free_fn_t)&barestr_free);
 
     end_test();
 }

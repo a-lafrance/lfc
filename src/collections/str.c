@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "lfc/utils/hash.h"
 #include "lfc/utils/mem.h"
 #include "lfc/utils/panic.h"
 
@@ -68,6 +69,23 @@ char* str_at(str_t* str, size_t index) {
     return str->data + index;
 }
 
+uint8_t str_eq(str_t* str, str_t* other) {
+    if (str->len != other->len) {
+        return 0;
+    }
+
+    for (size_t i = 0; i < str->len; i++) {
+        char c1 = str_get(str, i);
+        char c2 = str_get(other, i);
+
+        if (c1 != c2) {
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
 uint8_t str_is_empty(str_t* str) {
     return str->len == 0;
 }
@@ -78,4 +96,8 @@ uint8_t str_starts_with(str_t* str, char c) {
 
 uint8_t str_ends_with(str_t* str, char c) {
     return str->len > 0 && str_get(str, str->len - 1) == c;
+}
+
+size_t str_simple_hash(str_t* str) {
+    return __strbase_simple_hash(str->data, str->len);
 }

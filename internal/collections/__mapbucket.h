@@ -1,5 +1,5 @@
-#ifndef LFC_MAPBUCKET_HEADER
-#define LFC_MAPBUCKET_HEADER
+#ifndef LFC___mapbucket_HEADER
+#define LFC___mapbucket_HEADER
 
 #include "lfc/utils/mem.h"
 #include "lfc/utils/pair.h"

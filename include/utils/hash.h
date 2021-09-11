@@ -14,9 +14,12 @@ typedef size_t (*hash_fn_t)(void*);
 /// in a `size_t`, not specifically the `int` type.
 size_t int_simple_hash(size_t* x);
 
-/// Hashes the string by calculating a polynomial of based on its characters. If the pointer provided
+/// Hashes the string according to __strbase_simple_hash for all characters in the string.
+size_t barestr_simple_hash(char* str);
+
+/// Hashes the first n characters of the string by calculating a polynomial of based on its characters. If the pointer provided
 /// is null, the function panics.
-size_t str_simple_hash(char* str);
+size_t __strbase_simple_hash(char* str, size_t len);
 
 // TODO: more & better hashes
 
