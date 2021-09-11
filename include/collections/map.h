@@ -29,6 +29,7 @@ void hashmap_free(hashmap_t* map, free_fn_t key_free, free_fn_t val_free);
 // Retrieve the value for the given key, or null if it doesn't exist
 void* hashmap_get(hashmap_t* map, void* key);
 
+// NOTE: change to hashmap_containskey()?
 // Determine whether or not a value exists for the given key
 uint8_t hashmap_contains(hashmap_t* map, void* key);
 

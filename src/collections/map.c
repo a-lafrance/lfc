@@ -16,6 +16,10 @@ void hashmap_init(hashmap_t* map, size_t n_buckets, hash_fn_t hash_fn, int (*key
 
     struct __mapbucket* buckets = malloc_unwrap(sizeof(struct __mapbucket), n_buckets, "[hashmap_init] failed to alloc buckets");
     array_init(&map->buckets, buckets, n_buckets, sizeof(struct __mapbucket));
+
+    for (size_t i = 0; i < map->buckets.len; i++) {
+        __mapbucket_init(array_at(&map->buckets, i));
+    }
 }
 
 void hashmap_free(hashmap_t* map, free_fn_t key_free, free_fn_t val_free) {
@@ -53,6 +57,9 @@ uint8_t hashmap_set(hashmap_t* map, void* target_key, void* new_value, free_fn_t
         }
     }
 
+    __mapbucket_prepend(bucket, target_key, new_value);
+    map->size += 1;
+
     return 0;
 }
 
@@ -66,6 +73,8 @@ uint8_t hashmap_insert(hashmap_t* map, void* key, void* val) {
         struct __mapbucket* bucket = array_at(&map->buckets, bucket_index);
 
         __mapbucket_prepend(bucket, key, val);
+        map->size += 1;
+
         return 1;
     } else {
         return 0;

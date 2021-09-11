@@ -6,11 +6,11 @@
 
 void __mapbucket_node_init(struct __mapbucket_node* node, void* key, void* val) {
     node->next = NULL;
-    pair_init(&node->data, key, val);
+    pair_init(&(node->data), key, val);
 }
 
 void __mapbucket_node_free(struct __mapbucket_node* node, free_fn_t key_free, free_fn_t val_free) {
-    pair_free(&node->data, key_free, val_free);
+    pair_free(&(node->data), key_free, val_free);
     free(node);
 }
 
