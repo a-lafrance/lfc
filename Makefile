@@ -21,6 +21,7 @@ lfc_tests:
 	cd $(TARGET_DIR) && $(CC) $(TESTS_CFLAGS)           \
 		../$(TESTS_DIR)/collections/array_tests.c       \
 		../$(TESTS_DIR)/collections/linkedlist_tests.c  \
+		../$(TESTS_DIR)/collections/map_tests.c         \
 		../$(TESTS_DIR)/collections/set_tests.c         \
 		../$(TESTS_DIR)/collections/str_tests.c         \
 		../$(TESTS_DIR)/collections/vector_tests.c      \
