@@ -37,7 +37,8 @@ uint8_t hashmap_contains(hashmap_t* map, void* key);
 uint8_t hashmap_set(hashmap_t* map, void* key, void* value, free_fn_t val_free);
 
 // NOTE: is this necessary?
-// Insert the value into the map, without overwriting any pre-existing value
+// Insert the value into the map, without overwriting any pre-existing value; returns whether or not the
+// value was inserted
 uint8_t hashmap_insert(hashmap_t* map, void* key, void* val);
 
 // Remove the key-value pair for the given key, if it exists, and clean up appropriately

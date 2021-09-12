@@ -41,6 +41,8 @@ void* hashmap_get(hashmap_t* map, void* key) {
     return __mapbucket_find(bucket, key, map->key_eq);
 }
 
+// TODO: rehash
+
 uint8_t hashmap_set(hashmap_t* map, void* target_key, void* new_value, free_fn_t val_free) {
     size_t bucket_index = hashmap_bucket(map, target_key);
     struct __mapbucket* bucket = array_at(&map->buckets, bucket_index);
