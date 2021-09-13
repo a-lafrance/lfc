@@ -1,4 +1,5 @@
 INCLUDE_DIR = include
+INTERNAL_INCLUDE_DIR = internal
 SRC_DIR = src
 TARGET_DIR = target
 TESTS_DIR = tests/src
@@ -20,6 +21,7 @@ lfc_tests:
 	cd $(TARGET_DIR) && $(CC) $(TESTS_CFLAGS)           \
 		../$(TESTS_DIR)/collections/array_tests.c       \
 		../$(TESTS_DIR)/collections/linkedlist_tests.c  \
+		../$(TESTS_DIR)/collections/map_tests.c         \
 		../$(TESTS_DIR)/collections/set_tests.c         \
 		../$(TESTS_DIR)/collections/str_tests.c         \
 		../$(TESTS_DIR)/collections/vector_tests.c      \
@@ -30,29 +32,44 @@ lfc_tests:
 
 collections:
 	mkdir -p $(TARGET_DIR)
-	cd $(TARGET_DIR) && $(CC) $(CFLAGS)         \
-		../$(SRC_DIR)/collections/array.c       \
-		../$(SRC_DIR)/collections/linkedlist.c  \
-		../$(SRC_DIR)/collections/set.c         \
-		../$(SRC_DIR)/collections/str.c         \
-		../$(SRC_DIR)/collections/vector.c
+	cd $(TARGET_DIR) && $(CC) $(CFLAGS)          \
+		../$(SRC_DIR)/collections/array.c        \
+		../$(SRC_DIR)/collections/linkedlist.c   \
+		../$(SRC_DIR)/collections/map.c          \
+		../$(SRC_DIR)/collections/set.c          \
+		../$(SRC_DIR)/collections/str.c          \
+		../$(SRC_DIR)/collections/vector.c       \
+		../$(SRC_DIR)/collections/__mapbucket.c
 
 utils:
 	mkdir -p $(TARGET_DIR)
 	cd $(TARGET_DIR) && $(CC) $(CFLAGS)  \
+		../$(SRC_DIR)/utils/hash.c       \
 		../$(SRC_DIR)/utils/mem.c        \
-		../$(SRC_DIR)/utils/hash.c
+		../$(SRC_DIR)/utils/pair.c
 
 proper_include:
+	# make proper include dir
 	mkdir -p $(INCLUDE_DIR)/lfc
+
+	# move external headers
 	mv $(INCLUDE_DIR)/collections $(INCLUDE_DIR)/lfc
 	mv $(INCLUDE_DIR)/utils $(INCLUDE_DIR)/lfc
+
+	# move internal headers
+	mv $(INTERNAL_INCLUDE_DIR)/collections $(INCLUDE_DIR)/lfc/collections/internal
 
 # FIXME: this is ridiculously inefficient for large projects so there has to be a better way
 #       stitch this together right? yikes
 undo_proper_include:
+	# move internal headers back
+	mv $(INCLUDE_DIR)/lfc/collections/internal $(INTERNAL_INCLUDE_DIR)/collections
+
+	# move external headers back
 	mv $(INCLUDE_DIR)/lfc/collections $(INCLUDE_DIR)
 	mv $(INCLUDE_DIR)/lfc/utils $(INCLUDE_DIR)
+
+	# remove empty dir
 	-rm -rf $(INCLUDE_DIR)/lfc
 
 clean:

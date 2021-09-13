@@ -3,7 +3,7 @@
 ## Collections
 - [x] Vectors (array lists)
 - [x] Owned strings (think Rust's `String` type, as an alternative to bare `char*` for string literals)
-- [ ] Hash maps
+- [x] Hash maps
 - [ ] Slicing
 - [ ] Greater variety of linked lists (e.g. doubly-linked)
 - [ ] Stacks

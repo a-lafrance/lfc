@@ -54,7 +54,8 @@ char str_get(str_t* str, size_t index);
 // out of bounds.
 char* str_at(str_t* str, size_t index);
 
-// Check whether or not the string is empty.
+// TODO: test
+uint8_t str_eq(str_t* str, str_t* other);
 uint8_t str_is_empty(str_t* str);
 
 // Check whether or not the string starts with the given character. Returns false if the string is
@@ -64,6 +65,8 @@ uint8_t str_starts_with(str_t* str, char c);
 // Check whether or not the string starts with the given character. Returns false if the string is
 // empty, rather than panicking.
 uint8_t str_ends_with(str_t* str, char c);
+
+size_t str_simple_hash(str_t* str);
 
 // pending slicing:
     // trim

@@ -4,6 +4,9 @@ A C utility library
 ## Overview
 Consider `lfc` something like an external "standard library" for C, implementing modern conveniences like common data structures, error-checked memory allocation, and generally more well-defined error handling. C doesn't come with a lot of those things out-of-the-box, so I decided to implement them myself in case I'd ever need them.
 
+### Internals
+Certain parts of `lfc` need to be shared internally between different parts of the library, but don't really make sense as part of its external interface. The headers for these internal parts are kept in `internals/`, and their implementation files are mixed with the externally-facing ones. As a general rule, any file, type, function, etc prefixed with two underscores is part of `lfc` internals, and you generally won't need to (and shouldn't) use it externally. An important consequence of this is stability: for pre-1.0 versions, I'll do my best to maintain stability of the external interface, but I can't make any such guarantees about anything that's marked internal to the library. Those may need to change significantly from release to release, so you shouldn't rely on any kind of interface stability there if you happen to use anything internal.
+
 ## Installation & Use
 To build `lfc`, start by cloning the repository wherever you'd like. Then, from the root project directory, run `make` or `make liblfc`, which will build the library and place a `liblfc.a` archive in `target/` (relative to the root of the project). From there, you can take the archive from the target directory and use it however you'd like.
 

@@ -9,6 +9,7 @@
 #include <stdlib.h>
 
 #define MAX_LOAD_FACTOR 0.5
+// Should probably remove the ability to specify this in the init
 #define DEFAULT_BUCKETS (size_t)20
 
 /// A hash-based set, implemented with separate chaining collision resolution.

@@ -88,7 +88,7 @@ void test_append_and_free_many_values_no_cleanup() {
 
     size_t i = 0;
 
-    for (struct ll_node* node = list.head; node != NULL; node = node->next) {
+    for (struct __ll_node* node = list.head; node != NULL; node = node->next) {
         int* value = node->data;
         assert_eq(*value, i);
 
@@ -119,7 +119,7 @@ void test_append_and_free_many_values_with_cleanup() {
 
     int i = 0;
 
-    for (struct ll_node* node = list.head; node != NULL; node = node->next) {
+    for (struct __ll_node* node = list.head; node != NULL; node = node->next) {
         struct something* value = node->data;
         assert_eq(*value->n, i);
 
@@ -187,7 +187,7 @@ void test_prepend_and_free_many_values_no_cleanup() {
 
     size_t i = len - 1;
 
-    for (struct ll_node* node = list.head; node != NULL; node = node->next) {
+    for (struct __ll_node* node = list.head; node != NULL; node = node->next) {
         int* value = node->data;
         assert_eq(*value, i);
 
@@ -218,7 +218,7 @@ void test_prepend_and_free_many_values_with_cleanup() {
 
     int i = len - 1;
 
-    for (struct ll_node* node = list.head; node != NULL; node = node->next) {
+    for (struct __ll_node* node = list.head; node != NULL; node = node->next) {
         struct something* value = node->data;
         assert_eq(*value->n, i);
 

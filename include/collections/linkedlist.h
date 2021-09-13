@@ -8,14 +8,14 @@
 /// Implements a simple, singly-linked list. Elements can be inspected & inserted
 /// from the front & back of the list. Simple search & removal is also provided.
 
-struct ll_node {
-    struct ll_node* next;
+struct __ll_node {
+    struct __ll_node* next;
     void* data;
 };
 
 typedef struct {
-    struct ll_node* head;
-    struct ll_node* tail;
+    struct __ll_node* head;
+    struct __ll_node* tail;
     size_t len;
 } list_t;
 
