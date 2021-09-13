@@ -99,5 +99,5 @@ uint8_t str_ends_with(str_t* str, char c) {
 }
 
 size_t str_simple_hash(str_t* str) {
-    return __strbase_simple_hash(str->data, str->len);
+    return __strbase_simple_hash(str->buffer, str->len);
 }
