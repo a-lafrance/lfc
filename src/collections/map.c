@@ -87,7 +87,9 @@ void hashmap_remove(hashmap_t* map, void* key, free_fn_t key_free, free_fn_t val
     size_t bucket_index = hashmap_bucket(map, key);
     struct __mapbucket* bucket = array_at(&map->buckets, bucket_index);
 
-    __mapbucket_remove(bucket, key, map->key_eq, key_free, val_free);
+    if (__mapbucket_remove(bucket, key, map->key_eq, key_free, val_free)) {
+        map->size -= 1;
+    }
 }
 
 uint8_t hashmap_is_empty(hashmap_t* map) {

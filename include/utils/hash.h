@@ -10,9 +10,9 @@
 
 typedef size_t (*hash_fn_t)(void*);
 
-/// So simple, it just returns the value itself. Note that this operates on anything that will fit
-/// in a `size_t`, not specifically the `int` type.
-size_t int_simple_hash(size_t* x);
+/// Simple, just returns the value itself (as a size_t). Note that it only hashes an int-sized chunk of whatever
+/// data is passed through the pointer, to guarantee that no extra bits will corrupt the hash.
+size_t int_simple_hash(int* x);
 
 /// Hashes the string according to __strbase_simple_hash for all characters in the string.
 size_t barestr_simple_hash(char* str);

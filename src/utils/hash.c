@@ -3,8 +3,8 @@
 #include <string.h>
 #include "lfc/utils/panic.h"
 
-size_t int_simple_hash(size_t* x) {
-    return *(size_t*)x;
+size_t int_simple_hash(int* x) {
+    return (size_t)*x;
 }
 
 size_t barestr_simple_hash(char* str) {

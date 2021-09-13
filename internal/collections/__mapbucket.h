@@ -1,5 +1,7 @@
-#ifndef LFC___mapbucket_HEADER
-#define LFC___mapbucket_HEADER
+#ifndef LFC_mapbucket_HEADER
+#define LFC_mapbucket_HEADER
+
+#include <stdint.h>
 
 #include "lfc/utils/mem.h"
 #include "lfc/utils/pair.h"
@@ -32,7 +34,7 @@ void __mapbucket_free(struct __mapbucket* bucket, free_fn_t key_free, free_fn_t 
 void __mapbucket_prepend(struct __mapbucket* bucket, void* key, void* val);
 
 // Remove the key-value pair for the given key from the map bucket, cleaning up keys and values as necessary
-void __mapbucket_remove(struct __mapbucket* bucket, void* target_key, int (*key_eq)(void*, void*), free_fn_t key_free, free_fn_t val_free);
+uint8_t __mapbucket_remove(struct __mapbucket* bucket, void* target_key, int (*key_eq)(void*, void*), free_fn_t key_free, free_fn_t val_free);
 
 // Find the value for the given key, if it exists
 void* __mapbucket_find(struct __mapbucket* bucket, void* target_key, int (*key_eq)(void*, void*));

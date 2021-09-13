@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 
+// NOTE: maybe for any destructor parameters, they should be stored on init so that there's less repeated code
 typedef void (*free_fn_t)(void*);
 
 // Wrapper around malloc that panics on error

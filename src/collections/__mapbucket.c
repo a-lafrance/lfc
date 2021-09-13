@@ -14,6 +14,7 @@ void __mapbucket_node_free(struct __mapbucket_node* node, free_fn_t key_free, fr
     free(node);
 }
 
+
 void __mapbucket_init(struct __mapbucket* bucket) {
     bucket->head = NULL;
 }
@@ -28,14 +29,11 @@ void __mapbucket_prepend(struct __mapbucket* bucket, void* key, void* val) {
     struct __mapbucket_node* node = malloc_unwrap(sizeof(struct __mapbucket_node), 1, "failed to allocate new map bucket node");
     __mapbucket_node_init(node, key, val);
 
-    if (bucket->head != NULL) {
-        bucket->head->next = node;
-    }
-
+    node->next = bucket->head;
     bucket->head = node;
 }
 
-void __mapbucket_remove(struct __mapbucket* bucket, void* target_key, int (*key_eq)(void*, void*), free_fn_t key_free, free_fn_t val_free) {
+uint8_t __mapbucket_remove(struct __mapbucket* bucket, void* target_key, int (*key_eq)(void*, void*), free_fn_t key_free, free_fn_t val_free) {
     struct __mapbucket_node* prev = NULL;
 
     for (struct __mapbucket_node* node = bucket->head; node != NULL; node = node->next) {
@@ -48,10 +46,15 @@ void __mapbucket_remove(struct __mapbucket* bucket, void* target_key, int (*key_
                 bucket->head = node->next;
             }
 
-            pair_t pair = node->data;
             __mapbucket_node_free(node, key_free, val_free);
+
+            return 1;
         }
+
+        prev = node;
     }
+
+    return 0;
 }
 
 void* __mapbucket_find(struct __mapbucket* bucket, void* target_key, int (*key_eq)(void*, void*)) {
