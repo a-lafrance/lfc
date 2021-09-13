@@ -53,7 +53,10 @@ uint8_t hashmap_set(hashmap_t* map, void* target_key, void* new_value, free_fn_t
 
         if ((map->key_eq)(key, target_key)) {
             node->data.second = new_value;
-            val_free(value);
+
+            if (val_free != NULL) {
+                val_free(value);
+            }
 
             return 1;
         }

@@ -122,14 +122,37 @@ void test_hashmap_elem_inserted_twice_doesnt_overwrite() {
 }
 
 void test_hashmap_multiple_distinct_values_inserted_correctly() {
+    start_test();
 
+    hashmap_t map;
+    hashmap_init(&map, DEFAULT_BUCKETS, (hash_fn_t)&int_simple_hash, &int_eq);
+
+    char* str = "hello";
+    int str_len = strlen(str);
+    int len = DEFAULT_BUCKETS + 1;
+    int* keys = malloc_unwrap(sizeof(int), len, "[map_tests] failed to alloc int array");
+
+    for (int i = 0; i < len; i++) {
+        keys[i] = i;
+        assert(hashmap_insert(&map, keys + i, str + i));
+
+        assert(hashmap_contains(&map, keys + i % str_len));
+        assert_eq(map.size, i + 1);
+        assert_eq(hashmap_load_factor(&map), (i + 1.0) / DEFAULT_BUCKETS); // TODO: update for rehash
+        assert_false(hashmap_is_empty(&map));
+    }
+
+    hashmap_free(&map, NULL, NULL);
+    free(keys);
+
+    end_test();
 }
 
 void test_hashmap_value_set_correctly_no_overwrite() {
     start_test();
 
     hashmap_t map;
-    hashmap_init(&map, DEFAULT_BUCKETS, &int_simple_hash, &int_eq);
+    hashmap_init(&map, DEFAULT_BUCKETS, (hash_fn_t)&int_simple_hash, &int_eq);
 
     int x = 5;
     int y = 7;
@@ -143,11 +166,54 @@ void test_hashmap_value_set_correctly_no_overwrite() {
 }
 
 void test_hashmap_value_set_correctly_with_overwrite_no_cleanup() {
+    start_test();
 
+    hashmap_t map;
+    hashmap_init(&map, DEFAULT_BUCKETS, (hash_fn_t)&int_simple_hash, &int_eq);
+
+    int n = 5;
+    char* str = "asg";
+    hashmap_insert(&map, &n, str);
+
+    char* str2 = "acya";
+    assert(hashmap_set(&map, &n, str2, NULL));
+
+    assert_eq(hashmap_get(&map, &n), str2);
+    assert(hashmap_contains(&map, &n));
+    assert_false(hashmap_is_empty(&map));
+    assert_eq(hashmap_load_factor(&map), 1.0 / DEFAULT_BUCKETS);
+
+    hashmap_free(&map, NULL, NULL);
+
+    end_test();
 }
 
 void test_hashmap_value_set_correctly_with_overwrite_with_cleanup() {
+    start_test();
 
+    hashmap_t map;
+    hashmap_init(&map, DEFAULT_BUCKETS, (hash_fn_t)&str_simple_hash, &str_eq);
+
+    str_t str;
+    str_from(&str, "asg");
+
+    struct something thing;
+    something_init(&thing, 5);
+
+    hashmap_insert(&map, &str, &thing);
+
+    struct something thing2;
+    something_init(&thing2, 5);
+    assert(hashmap_set(&map, &str, &thing2, &something_free));
+
+    assert_eq(((struct something*)hashmap_get(&map, &str))->n, thing2.n);
+    assert(hashmap_contains(&map, &str));
+    assert_false(hashmap_is_empty(&map));
+    assert_eq(hashmap_load_factor(&map), 1.0 / DEFAULT_BUCKETS);
+
+    hashmap_free(&map, &str_free, &something_free);
+
+    end_test();
 }
 
 void test_hashmap_remove_on_empty_maintains_empty() {
