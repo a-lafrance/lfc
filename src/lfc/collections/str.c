@@ -44,9 +44,9 @@ void str_pushstr(str_t* str, str_t* to_push) {
     str->len += to_push->len;
 }
 
-char str_pop(str_t* str) {
+char str_poplast(str_t* str) {
     if (str->len == 0) {
-        panic(1, "[str_pop] can't pop from empty string");
+        panic(1, "[str_poplast] can't pop from empty string");
     }
 
     // NOTE: is this too confusing to be worth it?
