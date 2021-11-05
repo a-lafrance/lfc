@@ -20,8 +20,13 @@ void __mapbucket_init(struct __mapbucket* bucket) {
 }
 
 void __mapbucket_free(struct __mapbucket* bucket, free_fn_t key_free, free_fn_t val_free) {
-    for (struct __mapbucket_node* node = bucket->head; node != NULL; node = node->next) {
+    struct __mapbucket_node* node = bucket->head;
+
+    while (node != NULL) {
+        struct __mapbucket_node* next = node->next;
         __mapbucket_node_free(node, key_free, val_free);
+
+        node = next;
     }
 }
 
