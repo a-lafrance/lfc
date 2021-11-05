@@ -1,5 +1,5 @@
-#ifndef LFC_mapbucket_HEADER
-#define LFC_mapbucket_HEADER
+#ifndef LFC_MAPBUCKET_HEADER
+#define LFC_MAPBUCKET_HEADER
 
 #include <stdint.h>
 

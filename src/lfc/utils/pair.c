@@ -1,5 +1,4 @@
 #include "lfc/utils/pair.h"
-
 #include "lfc/utils/mem.h"
 
 void pair_init(pair_t* pair, void* first, void* second) {

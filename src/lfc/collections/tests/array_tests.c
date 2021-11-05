@@ -1,12 +1,12 @@
-#include "assert.h"
-#include "setup.h"
-#include "utils.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 #include "lfc/collections/array.h"
 #include "lfc/utils/mem.h"
 
-#include <stdlib.h>
-#include <stdio.h>
+#include "tests/assert.h"
+#include "tests/setup.h"
+#include "tests/utils.h"
 
 
 array_t alloc_int_data(size_t len) {

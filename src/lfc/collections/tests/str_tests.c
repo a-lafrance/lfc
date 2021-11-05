@@ -2,8 +2,9 @@
 
 #include "lfc/collections/str.h"
 
-#include "assert.h"
-#include "setup.h"
+#include "tests/assert.h"
+#include "tests/setup.h"
+
 
 void test_str_init_correctly() {
     start_test();

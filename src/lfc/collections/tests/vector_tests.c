@@ -1,10 +1,9 @@
-#include "setup.h"
-
 #include "lfc/collections/vector.h"
 #include "lfc/utils/mem.h"
 
-#include "assert.h"
-#include "utils.h"
+#include "tests/assert.h"
+#include "tests/utils.h"
+#include "tests/setup.h"
 
 
 void test_vec_init_with_capacity_correctly_no_cleanup() {

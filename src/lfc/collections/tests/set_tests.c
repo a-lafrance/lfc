@@ -1,15 +1,16 @@
-#include "assert.h"
-#include "setup.h"
-#include "utils.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "lfc/collections/set.h"
 
 #include "lfc/utils/hash.h"
 #include "lfc/utils/mem.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "tests/assert.h"
+#include "tests/setup.h"
+#include "tests/utils.h"
+
 
 // FIXME: some of these tests cause memory leaks i'm almost 100% sure (we'll call that a known issue)
 

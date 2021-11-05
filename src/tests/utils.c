@@ -1,9 +1,10 @@
-#include "utils.h"
-
-#include "lfc/utils/mem.h"
+#include "tests/utils.h"
 
 #include <stdlib.h>
 #include <string.h>
+
+#include "lfc/utils/mem.h"
+
 
 void something_init(struct something* thing, int n) {
     thing->n = malloc_unwrap(sizeof(int), 1, "[struct something] failed to alloc int field");

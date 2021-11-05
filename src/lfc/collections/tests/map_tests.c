@@ -1,7 +1,3 @@
-#include "assert.h"
-#include "setup.h"
-#include "utils.h"
-
 #include <stdlib.h>
 
 #include "lfc/collections/map.h"
@@ -9,6 +5,11 @@
 #include "lfc/collections/str.h"
 
 #include "lfc/utils/hash.h"
+
+#include "tests/assert.h"
+#include "tests/setup.h"
+#include "tests/utils.h"
+
 
 void test_hashmap_init_correctly_no_cleanup() {
     start_test();

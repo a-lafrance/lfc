@@ -1,11 +1,11 @@
-#include "assert.h"
-#include "setup.h"
-#include "utils.h"
+#include <stdio.h>
 
 #include "lfc/collections/linkedlist.h"
 #include "lfc/utils/mem.h"
 
-#include <stdio.h>
+#include "tests/assert.h"
+#include "tests/setup.h"
+#include "tests/utils.h"
 
 void assert_list_is_empty(list_t* list) {
     assert_eq(list->head, NULL);

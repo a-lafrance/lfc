@@ -1,7 +1,7 @@
 #include "lfc/utils/mem.h"
-#include "lfc/utils/panic.h"
 
 #include <stdlib.h>
+#include "lfc/utils/panic.h"
 
 void* malloc_unwrap(size_t elem_size, size_t elems, char* error_msg) {
     void* ptr = malloc(elems * elem_size);

@@ -1,7 +1,7 @@
-#include "setup.h"
-#include "assert.h"
-
 #include "lfc/utils/hash.h"
+
+#include "tests/assert.h"
+#include "tests/setup.h"
 
 // TODO: more tests
 
