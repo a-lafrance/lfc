@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#include "internal/collections/__mapbucket.h"
+#include "internals/collections/__mapbucket.h"
 
 #include "lfc/collections/array.h"
 #include "lfc/utils/pair.h"

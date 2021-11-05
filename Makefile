@@ -39,7 +39,7 @@ collections: $(TARGET_DIR)
 		../$(SRC_DIR)/lfc/collections/set.c          \
 		../$(SRC_DIR)/lfc/collections/str.c          \
 		../$(SRC_DIR)/lfc/collections/vector.c       \
-		../$(SRC_DIR)/internal/collections/__mapbucket.c
+		../$(SRC_DIR)/internals/collections/__mapbucket.c
 
 utils: $(TARGET_DIR)
 	cd $(TARGET_DIR) && $(CC) $(LFC_CFLAGS)  \

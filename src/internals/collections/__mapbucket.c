@@ -1,4 +1,4 @@
-#include "internal/collections/__mapbucket.h"
+#include "internals/collections/__mapbucket.h"
 
 #include "lfc/utils/mem.h"
 #include "lfc/utils/pair.h"
