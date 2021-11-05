@@ -139,7 +139,7 @@ void test_hashmap_multiple_distinct_values_inserted_correctly() {
 
         assert(hashmap_contains(&map, keys + i % str_len));
         assert_eq(map.size, i + 1);
-        assert_eq(hashmap_load_factor(&map), (i + 1.0) / DEFAULT_BUCKETS); // TODO: update for rehash
+        assert_eq(hashmap_load_factor(&map), (i + 1.0) / map.buckets.len); 
         assert_false(hashmap_is_empty(&map));
     }
 
