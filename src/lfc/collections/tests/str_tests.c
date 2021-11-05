@@ -187,6 +187,70 @@ void test_str_char_suffix_not_detected_when_str_empty() {
     end_test();
 }
 
+void test_str_poplast_from_one_char_str_makes_empty() {
+    start_test();
+
+    str_t str;
+    str_from(&str, "a");
+
+    assert_eq(str_poplast(&str), 'a');
+    assert(str_is_empty(&str));
+
+    end_test();
+}
+
+void test_str_poplast_from_many_char_str_works_correctly() {
+    start_test();
+
+    char* lit = "hello";
+    str_t str;
+    str_from(&str, lit);
+
+    assert_eq(str_poplast(&str), lit[strlen(lit) - 1]);
+    assert_eq(str.len, strlen(lit) - 1);
+    assert_false(str_is_empty(&str));
+
+    end_test();
+}
+
+void test_strs_determined_equal_when_equal() {
+    start_test();
+
+    char* lit = "hello";
+    str_t str1, str2;
+    str_from(&str1, lit);
+    str_from(&str2, lit);
+
+    assert(str_eq(&str1, &str2));
+
+    end_test();
+}
+
+void test_strs_determined_unequal_when_diff_lengths() {
+    start_test();
+
+    str_t str1, str2;
+    str_from(&str1, "hello");
+    str_from(&str2, "hi");
+
+    assert_false(str_eq(&str1, &str2));
+
+    end_test();
+}
+
+void test_strs_determined_unequal_when_same_lengths_diff_content() {
+    start_test();
+
+    str_t str1, str2;
+    str_from(&str1, "hello");
+    str_from(&str2, "hillo");
+
+    assert_false(str_eq(&str1, &str2));
+
+    end_test();
+}
+
+
 void run_str_tests() {
     start_suite();
 
@@ -204,6 +268,13 @@ void run_str_tests() {
     test_str_char_suffix_detected_when_present();
     test_str_char_suffix_not_detected_when_missing();
     test_str_char_suffix_not_detected_when_str_empty();
+
+    test_str_poplast_from_one_char_str_makes_empty();
+    test_str_poplast_from_many_char_str_works_correctly();
+
+    test_strs_determined_equal_when_equal();
+    test_strs_determined_unequal_when_diff_lengths();
+    test_strs_determined_unequal_when_same_lengths_diff_content();
 
     end_suite();
 }

@@ -44,8 +44,7 @@ void str_pushstr(str_t* str, str_t* to_push);
 
 // Pop the last character off of the string, or panic if the string is empty. Like vector,
 // string never deallocates on pop.
-// FIXME: untested
-char str_pop(str_t* str);
+char str_poplast(str_t* str);
 
 // Retrieve the character at the given index in the string. Panics if the index is out of bounds.
 char str_get(str_t* str, size_t index);
@@ -54,8 +53,11 @@ char str_get(str_t* str, size_t index);
 // out of bounds.
 char* str_at(str_t* str, size_t index);
 
-// TODO: test
+// Checks whether or not the two strings are lexicographically equivalent. Note that this checks string
+// equality, and does _not_ perform a full string comparison.
 uint8_t str_eq(str_t* str, str_t* other);
+
+// Returns whether or not the string is empty.
 uint8_t str_is_empty(str_t* str);
 
 // Check whether or not the string starts with the given character. Returns false if the string is
