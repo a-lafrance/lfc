@@ -9,12 +9,12 @@
 - [ ] Iterators
 
 ## Error Handling
-- [ ] Conditional panicking ("panic if")
-- [ ] Null pointer unwrapping (panic if null)
+- [x] Conditional panicking ("panic if"/guard)
+- [x] Null pointer unwrapping (panic if null)
 - [ ] A true panic system for unrecoverable errors, with stack unwinding
 
 ## I/O Utilities
-- [ ] Something like `println`/`eprintln` (print a line to different outstreams)
+- [ ] Something like `println`/`eprintln`/`fprintln` (print a line to different outstreams)
 - [ ] Logging
 
 ## Process Management
