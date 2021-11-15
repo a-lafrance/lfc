@@ -1,9 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "lfc/utils/panic.h"
-#include <stdlib.h>
-
 // collections
 void run_array_tests();
 void run_linkedlist_tests();
