@@ -27,6 +27,10 @@ void str_init(str_t* str);
 // Initialize a string from the string literal, copying it into the buffer.
 void str_from(str_t* str, char* literal);
 
+// Initialize a string from a character buffer. This differs from str_from() because
+// it doesn't copy the contents of the buffer, and instead takes ownership of them.
+void str_frombuf(str_t* str, char* buf, size_t buflen);
+
 // Free the string & its contents.
 void str_free(str_t* str);
 
