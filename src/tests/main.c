@@ -10,6 +10,7 @@ void run_str_tests();
 void run_vector_tests();
 
 // utils
+void run_convert_tests();
 void run_hash_tests();
 
 // TODO: fancier interface
@@ -23,6 +24,7 @@ int main(int argc, char** argv) {
         run_str_tests();
         run_vector_tests();
 
+        run_convert_tests();
         run_hash_tests();
     } else {
         for (int i = 1; i < argc; i++) {
@@ -30,6 +32,8 @@ int main(int argc, char** argv) {
 
             if (strcmp(suite, "array") == 0) {
                 run_array_tests();
+            } else if (strcmp(suite, "convert") == 0) {
+                run_convert_tests();
             } else if (strcmp(suite, "hash") == 0) {
                 run_hash_tests();
             } else if (strcmp(suite, "linkedlist") == 0) {

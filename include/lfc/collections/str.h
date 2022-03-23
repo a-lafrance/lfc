@@ -9,6 +9,8 @@
 #define STR_DEFAULT_CAPACITY (size_t)32
 
 // FUTURE: better string encoding that doesn't rely on char and ascii (like utf-8 or something)
+// FUTURE: the current str_t is very difficult to output because it's not null-terminated. it might be worth
+//         adding null termination and some kind of printing function just to make that easier
 
 /// An ASCII-encoded string wrapper around char* that provides additional safety & error-handling guarantees.
 /// Much like Rust's `String`, `str_t` is an owned, mutable string type that manages its own internal string "buffer",
@@ -26,6 +28,10 @@ void str_init(str_t* str);
 
 // Initialize a string from the string literal, copying it into the buffer.
 void str_from(str_t* str, char* literal);
+
+// Initialize a string from a character buffer. This differs from str_from() because
+// it doesn't copy the contents of the buffer, and instead takes ownership of them.
+void str_frombuf(str_t* str, char* buf, size_t buflen);
 
 // Free the string & its contents.
 void str_free(str_t* str);

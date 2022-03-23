@@ -15,9 +15,15 @@ void str_init(str_t* str) {
 
 void str_from(str_t* str, char* literal) {
     str->len = strlen(literal);
-    str->capacity = str->len + STR_DEFAULT_CAPACITY;
+    str->capacity = str->len;
     str->buffer = malloc_unwrap(sizeof(char), str->capacity, "[str_init] failed to alloc string data");
     memcpy(str->buffer, literal, str->len);
+}
+
+void str_frombuf(str_t* str, char* buf, size_t buflen) {
+    str->len = buflen;
+    str->capacity = buflen;
+    str->buffer = buf;
 }
 
 void str_free(str_t* str) {

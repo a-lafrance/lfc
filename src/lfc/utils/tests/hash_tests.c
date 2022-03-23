@@ -23,8 +23,6 @@ void barestr_simple_hash_sanity_check() {
 
 void run_hash_tests() {
     start_suite();
-
     barestr_simple_hash_sanity_check();
-
     end_suite();
 }
