@@ -27,6 +27,7 @@ tests: $(TARGET_DIR) liblfc.a
 		../$(SRC_DIR)/lfc/collections/tests/set_tests.c          \
 		../$(SRC_DIR)/lfc/collections/tests/str_tests.c          \
 		../$(SRC_DIR)/lfc/collections/tests/vector_tests.c       \
+		../$(SRC_DIR)/lfc/utils/tests/convert_tests.c            \
 		../$(SRC_DIR)/lfc/utils/tests/hash_tests.c               \
 		../$(SRC_DIR)/tests/utils.c                              \
 		../$(SRC_DIR)/tests/main.c
