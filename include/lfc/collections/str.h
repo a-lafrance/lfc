@@ -9,6 +9,8 @@
 #define STR_DEFAULT_CAPACITY (size_t)32
 
 // FUTURE: better string encoding that doesn't rely on char and ascii (like utf-8 or something)
+// FUTURE: the current str_t is very difficult to output because it's not null-terminated. it might be worth
+//         adding null termination and some kind of printing function just to make that easier
 
 /// An ASCII-encoded string wrapper around char* that provides additional safety & error-handling guarantees.
 /// Much like Rust's `String`, `str_t` is an owned, mutable string type that manages its own internal string "buffer",

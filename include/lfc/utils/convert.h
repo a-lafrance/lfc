@@ -3,6 +3,8 @@
 
 #include "lfc/collections/str.h"
 
+// itoa and itos convert an integer to its string representation, storing it either in a null-terminated
+// character buffer or an lfc owned string
 char* itoa(int n);
 str_t itos(int n);
 
