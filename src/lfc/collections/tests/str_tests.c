@@ -31,7 +31,7 @@ void test_str_init_from_literal_correctly() {
     str_from(&str, text);
 
     assert_eq(str.len, text_len);
-    assert_eq(str.capacity, STR_DEFAULT_CAPACITY + text_len); // impl detail?
+    assert_eq(str.capacity, text_len); // impl detail?
     assert_false(str_is_empty(&str));
     assert(strncmp(str.buffer, text, text_len) == 0);
 

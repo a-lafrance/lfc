@@ -43,6 +43,7 @@ collections: $(TARGET_DIR)
 
 utils: $(TARGET_DIR)
 	cd $(TARGET_DIR) && $(CC) $(LFC_CFLAGS)  \
+		../$(SRC_DIR)/lfc/utils/convert.c    \
 		../$(SRC_DIR)/lfc/utils/hash.c       \
 		../$(SRC_DIR)/lfc/utils/mem.c        \
 		../$(SRC_DIR)/lfc/utils/pair.c
