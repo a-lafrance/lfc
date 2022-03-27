@@ -57,6 +57,14 @@ void dynarray_free(dynarray_t* array, free_fn_t elem_free) {
     array_free(&array->base, elem_free);
 }
 
+size_t dynarray_len(dynarray_t* array) {
+    return array->base.len;
+}
+
+size_t dynarray_elem_size(dynarray_t* array) {
+    return array->base.elem_size;
+}
+
 void* dynarray_at(dynarray_t* array, size_t index) {
     return array_at(&array->base, index);
 }

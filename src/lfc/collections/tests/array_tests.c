@@ -250,7 +250,126 @@ void test_find_elem_not_found_when_missing() {
     end_test();
 }
 
-// array_find: null elem_eq panic test?
+void test_dynarray_init_and_freed_correctly_no_elem_free() {
+    start_test();
+
+    size_t len = 5;
+    dynarray_t array;
+    dynarray_init(&array, len, sizeof(int));
+
+    assert_eq(dynarray_len(&array), len);
+    assert_eq(dynarray_elem_size(&array), sizeof(int));
+
+    dynarray_free(&array, NULL);
+
+    end_test();
+}
+
+
+void test_dynarray_init_and_freed_correctly_with_elem_free() {
+    start_test();
+
+    size_t len = 3;
+    dynarray_t array;
+    dynarray_init(&array, len, sizeof(struct something));
+
+    assert_eq(dynarray_len(&array), len);
+    assert_eq(dynarray_elem_size(&array), sizeof(struct something));
+
+    dynarray_free(&array, (free_fn_t)(&something_free));
+
+    end_test();
+}
+
+
+void test_dynarray_first_index_accessed_and_modified_correctly() {
+    start_test();
+
+    dynarray_t array;
+    dynarray_init(&array, 3, sizeof(int));
+    *(int*)dynarray_at(&array, 0) = 0;
+
+    int* first = dynarray_at(&array, 0);
+    assert_eq(*first, 0);
+
+    dynarray_free(&array, NULL);
+
+    end_test();
+}
+
+
+void test_dynarray_mid_index_accessed_and_modified_correctly() {
+    start_test();
+
+    dynarray_t array;
+    dynarray_init(&array, 3, sizeof(int));
+    *(int*)dynarray_at(&array, dynarray_len(&array) / 2) = 0;
+
+    int* elem = dynarray_at(&array, dynarray_len(&array) / 2);
+    assert_eq(*elem, 0);
+
+    dynarray_free(&array, NULL);
+
+    end_test();
+}
+
+
+void test_dynarray_last_index_accessed_and_modified_correctly() {
+    start_test();
+
+    dynarray_t array;
+    dynarray_init(&array, 3, sizeof(int));
+    *(int*)dynarray_at(&array, dynarray_len(&array) - 1) = 0;
+
+    int* elem = dynarray_at(&array, dynarray_len(&array) - 1);
+    assert_eq(*elem, 0);
+
+    dynarray_free(&array, NULL);
+
+    end_test();
+}
+
+
+void test_dynarray_find_elem_found_when_present() {
+    start_test();
+
+    dynarray_t array;
+    dynarray_init(&array, 5, sizeof(int));
+
+    for (size_t i = 0; i < dynarray_len(&array); i++) {
+        int* val = dynarray_at(&array, i);
+        *val = i;
+    }
+
+    int target = dynarray_len(&array) / 2;
+    size_t target_index = dynarray_find(&array, &target, &int_eq);
+    assert_eq(target_index, (size_t)target);
+
+    dynarray_free(&array, NULL);
+
+    end_test();
+}
+
+
+void test_dynarray_find_elem_not_found_when_missing() {
+    start_test();
+
+    dynarray_t array;
+    dynarray_init(&array, 5, sizeof(int));
+
+    for (size_t i = 0; i < dynarray_len(&array); i++) {
+        int* val = dynarray_at(&array, i);
+        *val = i;
+    }
+
+    int target = dynarray_len(&array) + 1;
+    size_t target_index = dynarray_find(&array, &target, &int_eq);
+    assert_eq(target_index, (size_t)-1);
+
+    dynarray_free(&array, NULL);
+
+    end_test();
+}
 
 
 void run_array_tests() {
@@ -269,6 +388,14 @@ void run_array_tests() {
 
     test_find_elem_found_when_present();
     test_find_elem_not_found_when_missing();
+
+    test_dynarray_init_and_freed_correctly_no_elem_free();
+    test_dynarray_init_and_freed_correctly_with_elem_free();
+    test_dynarray_first_index_accessed_and_modified_correctly();
+    test_dynarray_mid_index_accessed_and_modified_correctly();
+    test_dynarray_last_index_accessed_and_modified_correctly();
+    test_dynarray_find_elem_found_when_present();
+    test_dynarray_find_elem_not_found_when_missing();
 
     end_suite();
 }
