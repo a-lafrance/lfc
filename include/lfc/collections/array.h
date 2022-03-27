@@ -32,4 +32,13 @@ size_t array_find(array_t* array, void* elem, int (*elem_eq)(void*, void*));
 
 // TODO: functional stuff
 
+typedef struct {
+    array_t base;
+} dynarray_t;
+
+void dynarray_init(dynarray_t* array, size_t len, size_t elem_size);
+void dynarray_free(dynarray_t* array, free_fn_t elem_free);
+void* dynarray_at(dynarray_t* array, size_t index);
+size_t dynarray_find(dynarray_t* array, void* elem, int (*elem_eq)(void*, void*));
+
 #endif
