@@ -19,7 +19,7 @@
 typedef struct {
     hash_fn_t hash_fn;
     int (*elem_eq)(void*, void*); // equality between two elements
-    array_t buckets; // the actual array never expands so a vector is unnecessary
+    dynarray_t buckets; // the actual array never expands so a vector is unnecessary
     size_t size;
 } hashset_t;
 
@@ -44,6 +44,9 @@ int hashset_is_empty(hashset_t* set);
 
 // Calculate the load factor for the set
 double hashset_load_factor(hashset_t* set);
+
+// Retrieve the number of buckets in the set
+size_t hashset_n_buckets(hashset_t* set);
 
 // TODO: tree set
 

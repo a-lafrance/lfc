@@ -17,36 +17,35 @@ void hashmap_init(hashmap_t* map, size_t n_buckets, hash_fn_t hash_fn, int (*key
     map->key_eq = key_eq;
     map->size = 0;
 
-    struct __mapbucket* buckets = malloc_unwrap(sizeof(struct __mapbucket), n_buckets, "[hashmap_init] failed to alloc buckets");
-    array_init(&map->buckets, buckets, n_buckets, sizeof(struct __mapbucket));
+    dynarray_init(&map->buckets, n_buckets, sizeof(struct __mapbucket));
 
-    for (size_t i = 0; i < map->buckets.len; i++) {
-        __mapbucket_init(array_at(&map->buckets, i));
+    for (size_t i = 0; i < dynarray_len(&map->buckets); i++) {
+        __mapbucket_init(dynarray_at(&map->buckets, i));
     }
 }
 
 void hashmap_free(hashmap_t* map, free_fn_t key_free, free_fn_t val_free) {
-    for (size_t i = 0; i < map->buckets.len; i++) {
-        __mapbucket_free(array_at(&map->buckets, i), key_free, val_free);
+    for (size_t i = 0; i < dynarray_len(&map->buckets); i++) {
+        __mapbucket_free(dynarray_at(&map->buckets, i), key_free, val_free);
     }
 
-    array_free(&map->buckets, NULL);
+    dynarray_free(&map->buckets, NULL);
 }
 
 size_t __hashmap_bucket(hashmap_t* map, void* key) {
-    return (map->hash_fn)(key) % map->buckets.len;
+    return (map->hash_fn)(key) % dynarray_len(&map->buckets);
 }
 
 void* hashmap_get(hashmap_t* map, void* key) {
     size_t bucket_index = __hashmap_bucket(map, key);
-    struct __mapbucket* bucket = array_at(&map->buckets, bucket_index);
+    struct __mapbucket* bucket = dynarray_at(&map->buckets, bucket_index);
 
     return __mapbucket_find(bucket, key, map->key_eq);
 }
 
 uint8_t hashmap_set(hashmap_t* map, void* target_key, void* new_value, free_fn_t val_free) {
     size_t bucket_index = __hashmap_bucket(map, target_key);
-    struct __mapbucket* bucket = array_at(&map->buckets, bucket_index);
+    struct __mapbucket* bucket = dynarray_at(&map->buckets, bucket_index);
 
     for (struct __mapbucket_node* node = bucket->head; node != NULL; node = node->next) {
         void* key = node->data.first;
@@ -74,11 +73,11 @@ uint8_t hashmap_contains(hashmap_t* map, void* key) {
 }
 
 void __hashmap_rehash(hashmap_t* map) {
-    array_t old_buckets = map->buckets;
-    hashmap_init(map, old_buckets.len * 2, map->hash_fn, map->key_eq);
+    dynarray_t old_buckets = map->buckets;
+    hashmap_init(map, dynarray_len(&old_buckets) * 2, map->hash_fn, map->key_eq);
 
-    for (size_t i = 0; i < old_buckets.len; i++) {
-        struct __mapbucket* bucket = array_at(&old_buckets, i);
+    for (size_t i = 0; i < dynarray_len(&old_buckets); i++) {
+        struct __mapbucket* bucket = dynarray_at(&old_buckets, i);
 
         for (struct __mapbucket_node* node = bucket->head; node != NULL; node = node->next) {
             hashmap_insert(map, node->data.first, node->data.second);
@@ -87,7 +86,7 @@ void __hashmap_rehash(hashmap_t* map) {
         __mapbucket_free(bucket, NULL, NULL);
     }
 
-    array_free(&old_buckets, NULL);
+    dynarray_free(&old_buckets, NULL);
 }
 
 uint8_t hashmap_insert(hashmap_t* map, void* key, void* val) {
@@ -97,7 +96,7 @@ uint8_t hashmap_insert(hashmap_t* map, void* key, void* val) {
         }
 
         size_t bucket_index = __hashmap_bucket(map, key);
-        struct __mapbucket* bucket = array_at(&map->buckets, bucket_index);
+        struct __mapbucket* bucket = dynarray_at(&map->buckets, bucket_index);
 
         __mapbucket_prepend(bucket, key, val);
         map->size += 1;
@@ -110,7 +109,7 @@ uint8_t hashmap_insert(hashmap_t* map, void* key, void* val) {
 
 void hashmap_remove(hashmap_t* map, void* key, free_fn_t key_free, free_fn_t val_free) {
     size_t bucket_index = __hashmap_bucket(map, key);
-    struct __mapbucket* bucket = array_at(&map->buckets, bucket_index);
+    struct __mapbucket* bucket = dynarray_at(&map->buckets, bucket_index);
 
     if (__mapbucket_remove(bucket, key, map->key_eq, key_free, val_free)) {
         map->size -= 1;
@@ -122,5 +121,9 @@ uint8_t hashmap_is_empty(hashmap_t* map) {
 }
 
 double hashmap_load_factor(hashmap_t* map) {
-    return (double)map->size / map->buckets.len;
+    return (double)map->size / dynarray_len(&map->buckets);
+}
+
+size_t hashmap_n_buckets(hashmap_t* map) {
+    return dynarray_len(&map->buckets);
 }

@@ -16,7 +16,7 @@
 typedef struct {
     hash_fn_t hash_fn;
     int (*key_eq)(void*, void*);
-    array_t buckets;
+    dynarray_t buckets;
     size_t size;
 } hashmap_t;
 
@@ -49,6 +49,9 @@ uint8_t hashmap_is_empty(hashmap_t* map);
 
 // Return the load factor of the map
 double hashmap_load_factor(hashmap_t* map);
+
+// Retrieve the number of buckets in the map
+size_t hashmap_n_buckets(hashmap_t* map);
 
 // TODO: tree map
 
