@@ -22,7 +22,7 @@ void test_hashset_init_and_freed_correctly_no_cleanup() {
 
     assert_eq(set.hash_fn, (hash_fn_t)&int_simple_hash);
     assert_eq(set.elem_eq, &int_eq);
-    assert_eq(set.buckets.len, DEFAULT_BUCKETS);
+    assert_eq(hashset_n_buckets(&set), DEFAULT_BUCKETS);
     assert_eq(set.size, 0);
     assert_eq(hashset_load_factor(&set), 0);
     assert(hashset_is_empty(&set));
@@ -43,7 +43,7 @@ void test_hashset_init_and_freed_correctly_with_cleanup() {
 
     assert_eq(set.hash_fn, (hash_fn_t)&barestr_simple_hash);
     assert_eq(set.elem_eq, &barestr_eq);
-    assert_eq(set.buckets.len, DEFAULT_BUCKETS);
+    assert_eq(hashset_n_buckets(&set), DEFAULT_BUCKETS);
     assert_eq(set.size, 0);
     assert_eq(hashset_load_factor(&set), 0);
     assert(hashset_is_empty(&set));

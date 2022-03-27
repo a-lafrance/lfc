@@ -17,7 +17,7 @@ void test_hashmap_init_correctly_no_cleanup() {
     hashmap_t map;
     hashmap_init(&map, DEFAULT_BUCKETS, (hash_fn_t)&int_simple_hash, &int_eq);
 
-    assert_eq(map.buckets.len, DEFAULT_BUCKETS);
+    assert_eq(hashmap_n_buckets(&map), DEFAULT_BUCKETS);
     assert_eq(map.size, 0);
     assert_eq(hashmap_load_factor(&map), 0.0);
     assert(hashmap_is_empty(&map));
@@ -33,7 +33,7 @@ void test_hashmap_init_correctly_with_cleanup() {
     hashmap_t map;
     hashmap_init(&map, DEFAULT_BUCKETS, (hash_fn_t)&str_simple_hash, &str_eq);
 
-    assert_eq(map.buckets.len, DEFAULT_BUCKETS);
+    assert_eq(hashmap_n_buckets(&map), DEFAULT_BUCKETS);
     assert_eq(map.size, 0);
     assert_eq(hashmap_load_factor(&map), 0.0);
     assert(hashmap_is_empty(&map));
@@ -49,7 +49,7 @@ void test_hashmap_init_correctly_non_default_buckets() {
     hashmap_t map;
     hashmap_init(&map, DEFAULT_BUCKETS, (hash_fn_t)&int_simple_hash, &int_eq);
 
-    assert_eq(map.buckets.len, DEFAULT_BUCKETS);
+    assert_eq(hashmap_n_buckets(&map), DEFAULT_BUCKETS);
     assert_eq(map.size, 0);
     assert_eq(hashmap_load_factor(&map), 0.0);
     assert(hashmap_is_empty(&map));
@@ -139,7 +139,7 @@ void test_hashmap_multiple_distinct_values_inserted_correctly() {
 
         assert(hashmap_contains(&map, keys + i % str_len));
         assert_eq(map.size, i + 1);
-        assert_eq(hashmap_load_factor(&map), (i + 1.0) / map.buckets.len); 
+        assert_eq(hashmap_load_factor(&map), (i + 1.0) / hashmap_n_buckets(&map));
         assert_false(hashmap_is_empty(&map));
     }
 
@@ -226,7 +226,7 @@ void test_hashmap_remove_on_empty_maintains_empty() {
     int n = 5;
     hashmap_remove(&map, &n, NULL, NULL);
 
-    assert_eq(map.buckets.len, DEFAULT_BUCKETS);
+    assert_eq(hashmap_n_buckets(&map), DEFAULT_BUCKETS);
     assert_eq(map.size, 0);
     assert_eq(hashmap_load_factor(&map), 0.0);
     assert(hashmap_is_empty(&map));
