@@ -31,6 +31,17 @@ array_t alloc_struct_data(size_t len) {
     return array;
 }
 
+dynarray_t alloc_struct_dynarray(size_t len) {
+    dynarray_t array;
+    dynarray_init(&array, len, sizeof(struct something));
+
+    for (int i = 0; i < len; i++) {
+        something_init_zeroed(dynarray_at(&array, i));
+    }
+
+    return array;
+}
+
 
 void test_array_init_and_freed_correctly_no_elem_free() {
     start_test();
@@ -270,9 +281,8 @@ void test_dynarray_init_and_freed_correctly_with_elem_free() {
     start_test();
 
     size_t len = 3;
-    dynarray_t array;
-    dynarray_init(&array, len, sizeof(struct something));
-
+    dynarray_t array = alloc_struct_dynarray(len);
+    
     assert_eq(dynarray_len(&array), len);
     assert_eq(dynarray_elem_size(&array), sizeof(struct something));
 
