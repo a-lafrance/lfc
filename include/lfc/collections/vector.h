@@ -33,6 +33,9 @@ void vec_free(vector_t* vec, free_fn_t elem_free);
 // Retrieve the specified element in the vector, or panic if the index is out of bounds.
 void* vec_at(vector_t* vec, size_t index);
 
+// Returns the length of the vector.
+size_t vec_len(vector_t* vec);
+
 // Check whether or not the vector is empty.
 uint8_t vec_is_empty(vector_t* vec);
 

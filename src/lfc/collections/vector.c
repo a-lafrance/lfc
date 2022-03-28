@@ -37,8 +37,12 @@ void* vec_at(vector_t* vec, size_t index) {
     return vec->data + index * vec->elem_size;
 }
 
+size_t vec_len(vector_t* vec) {
+    return vec->len;
+}
+
 uint8_t vec_is_empty(vector_t* vec) {
-    return vec->len == 0;
+    return vec_len(vec) == 0;
 }
 
 void vec_push(vector_t* vec, void* val) {
