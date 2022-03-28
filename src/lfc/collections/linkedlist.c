@@ -123,6 +123,10 @@ void* ll_remove(list_t* list, void* target, int (*elem_eq)(void*, void*)) {
     return NULL;
 }
 
+size_t ll_len(list_t* list) {
+    return list->len;
+}
+
 int ll_is_empty(list_t* list) {
-    return list->len == 0;
+    return ll_len(list) == 0;
 }
