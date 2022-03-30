@@ -1,5 +1,10 @@
 name: tests
-on: [ pull_request, workflow_dispatch ]
+on:
+    pull_request:
+    workflow_dispatch:
+defaults:
+    run:
+        shell: bash
 jobs:
     macos:
         runs-on: macos-latest
