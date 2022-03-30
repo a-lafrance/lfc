@@ -3,7 +3,7 @@ INCLUDE_DIR = include
 SRC_DIR = src
 TARGET_DIR = target
 
-CC = clang # FIXME: this should really be architecture-specific
+CC = gcc # FIXME: this should really be architecture-specific
 
 BASE_CFLAGS = -g -I../include
 LFC_CFLAGS = $(BASE_CFLAGS) -c
