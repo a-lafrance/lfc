@@ -1,26 +1,19 @@
-name: CI # there have to be better names right
-
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
-  workflow_dispatch:
-
+name: tests
+on: [ pull_request, workflow_dispatch ]
 jobs:
-  run_tests:
-    runs-on: macos-latest # FIXME: this only works on macOS for some reason (Ubuntu failed)
-    steps:
-      # Check out the repo at $GITHUB_WORKSPACE
-      - name: Checkout repo
-        uses: actions/checkout@v2
+    macos:
+        runs-on: macos-latest
+        steps:
+            - name: Checkout repo
+            uses: actions/checkout@v2
 
-      - name: Build liblfc and unit tests
-        run: cd $GITHUB_WORKSPACE && make tests
+            - name: Build and run unit tests
+            run: make tests && ./target/tests
+    linux:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repo
+            uses: actions/checkout@v2
 
-      - name: Run unit tests (if build succeeded)
-        run: |
-         if [ $? -eq 0 ] && [ -e ./target/tests ]
-         then
-           target/tests
-         fi
+            - name: Build and run unit tests
+            run: make tests && ./target/tests
