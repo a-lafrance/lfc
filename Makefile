@@ -5,9 +5,12 @@ TARGET_DIR = target
 
 CC = cc # NOTE: is this architecture-specific enough?
 
-BASE_CFLAGS = -g -I../include
-LFC_CFLAGS = $(BASE_CFLAGS) -c
-TESTS_CFLAGS = $(BASE_CFLAGS) -o tests
+CFLAGS = -g -I../include
+LFC_CFLAGS = $(CFLAGS) -c
+TESTS_CFLAGS = $(CFLAGS) -o tests
+
+LFC_CLIBS = -lmath
+TESTS_CLIBS = -L. -llfc
 
 # TODO: this needs a lot of work to be as sophisticated as it should be
 
@@ -24,16 +27,18 @@ tests: $(TARGET_DIR) liblfc.a
 		../$(SRC_DIR)/lfc/collections/tests/*.c   \
 		../$(SRC_DIR)/lfc/utils/tests/*.c         \
 		../$(SRC_DIR)/tests/*.c                   \
-		-L. -llfc
+		$(TESTS_CLIBS)
 
 collections: $(TARGET_DIR)
 	cd $(TARGET_DIR) && $(CC) $(LFC_CFLAGS)      \
 		../$(SRC_DIR)/lfc/collections/*.c        \
-		../$(SRC_DIR)/internals/collections/*.c
+		../$(SRC_DIR)/internals/collections/*.c  \
+		$(LFC_CLIBS)
 
 utils: $(TARGET_DIR)
 	cd $(TARGET_DIR) && $(CC) $(LFC_CFLAGS)  \
-		../$(SRC_DIR)/lfc/utils/*.c
+		../$(SRC_DIR)/lfc/utils/*.c          \
+		$(LFC_CLIBS)
 
 $(TARGET_DIR):
 	mkdir -p $@
