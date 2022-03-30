@@ -3,7 +3,7 @@ INCLUDE_DIR = include
 SRC_DIR = src
 TARGET_DIR = target
 
-CC = gcc # FIXME: this should really be architecture-specific
+CC = cc # NOTE: is this architecture-specific enough?
 
 BASE_CFLAGS = -g -I../include
 LFC_CFLAGS = $(BASE_CFLAGS) -c
