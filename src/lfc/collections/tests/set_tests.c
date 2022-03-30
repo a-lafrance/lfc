@@ -11,9 +11,6 @@
 #include "tests/setup.h"
 #include "tests/utils.h"
 
-
-// FIXME: some of these tests cause memory leaks i'm almost 100% sure (we'll call that a known issue)
-
 void test_hashset_init_and_freed_correctly_no_cleanup() {
     start_test();
 
@@ -27,8 +24,8 @@ void test_hashset_init_and_freed_correctly_no_cleanup() {
     assert_eq(hashset_load_factor(&set), 0);
     assert(hashset_is_empty(&set));
 
-    int* n = calloc_unwrap(sizeof(int), 1, "[hashset_tests] unable to alloc int value");
-    assert_false(hashset_contains(&set, n));
+    int n = 0;
+    assert_false(hashset_contains(&set, &n));
 
     hashset_free(&set, NULL);
 
@@ -60,12 +57,12 @@ void test_hashset_insert_into_empty_set() {
     hashset_t set;
     hashset_init(&set, DEFAULT_BUCKETS, (hash_fn_t)&int_simple_hash, &int_eq);
 
-    int* value = calloc_unwrap(sizeof(int), 1, "[hashset_tests] failed to alloc int value");
-    hashset_insert(&set, value);
+    int value = 0;
+    hashset_insert(&set, &value);
 
     assert_eq(set.size, 1);
     assert_eq(hashset_load_factor(&set), 1.0 / DEFAULT_BUCKETS);
-    assert(hashset_contains(&set, value));
+    assert(hashset_contains(&set, &value));
     assert_false(hashset_is_empty(&set));
 
     hashset_free(&set, NULL);
@@ -80,14 +77,14 @@ void test_hashset_insert_into_nonempty_set() {
     hashset_init(&set, DEFAULT_BUCKETS, (hash_fn_t)&int_simple_hash, &int_eq);
 
     int n = DEFAULT_BUCKETS * MAX_LOAD_FACTOR;
+    int* values = malloc_unwrap(sizeof(int), n + 1, "[hashset_tests] failed to alloc value buffer");
 
     for (int i = 0; i <= n; i++) {
-        int* value = malloc_unwrap(sizeof(int), 1, "[hashset_tests] failed to alloc int value");
-        *value = i;
-        hashset_insert(&set, value);
+		values[i] = i;
+        hashset_insert(&set, values + i);
 
         assert_eq(set.size, i + 1);
-        assert(hashset_contains(&set, value));
+        assert(hashset_contains(&set, values + i));
         assert_false(hashset_is_empty(&set));
 
         // Make sure the rehash was successful
@@ -96,6 +93,7 @@ void test_hashset_insert_into_nonempty_set() {
     }
 
     hashset_free(&set, NULL);
+	free(values);
 
     end_test();
 }
@@ -106,18 +104,15 @@ void test_hashset_remove_from_one_elem_set_no_cleanup() {
     hashset_t set;
     hashset_init(&set, DEFAULT_BUCKETS, (hash_fn_t)&int_simple_hash, &int_eq);
 
-    int* elem = malloc_unwrap(sizeof(int), 1, "[hashset_tests] failed to alloc int value");
-    *elem = 3;
-
-    hashset_insert(&set, elem);
-    hashset_remove(&set, elem, NULL);
+    int elem = 3;
+    hashset_insert(&set, &elem);
+    hashset_remove(&set, &elem, NULL);
 
     assert_eq(set.size, 0);
     assert(hashset_is_empty(&set));
     assert_eq(hashset_load_factor(&set), 0);
 
     hashset_free(&set, NULL);
-    free(elem);
 
     end_test();
 }
@@ -151,19 +146,19 @@ void test_hashset_remove_from_many_elem_set_no_cleanup() {
     hashset_init(&set, DEFAULT_BUCKETS, (hash_fn_t)&int_simple_hash, &int_eq);
 
     int n = 5;
-    int* value;
+    int* values = malloc_unwrap(sizeof(int), n + 1, "[hashset_tests] failed to alloc value buffer");
 
     for (int i = 0; i <= n; i++) {
-        value = malloc_unwrap(sizeof(int), 1, "[hashset_tests] failed to alloc int value");
-        *value = i;
-        hashset_insert(&set, value);
+		values[i] = i;
+        hashset_insert(&set, values + i);
     }
 
-    hashset_remove(&set, value, NULL);
-    assert_false(hashset_contains(&set, value));
+	int* target = values + n / 2;
+    hashset_remove(&set, target, NULL);
+    assert_false(hashset_contains(&set, target));
 
     hashset_free(&set, NULL);
-    free(value);
+    free(values);
 
     end_test();
 }

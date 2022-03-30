@@ -163,6 +163,8 @@ void test_hashmap_value_set_correctly_no_overwrite() {
     assert_false(hashmap_is_empty(&map));
     assert_eq(hashmap_load_factor(&map), 1.0 / DEFAULT_BUCKETS);
 
+	hashmap_free(&map, NULL, NULL);
+
     end_test();
 }
 
@@ -264,7 +266,8 @@ void test_hashmap_remove_with_one_elem_makes_empty_with_cleanup() {
     hashmap_init(&map, DEFAULT_BUCKETS, (hash_fn_t)&str_simple_hash, &str_eq);
 
     str_t str;
-    str_from(&str, "hello world");
+	char* lit = "hello world";
+    str_from(&str, lit);
 
     struct something thing;
     something_init(&thing, 5);
@@ -272,12 +275,16 @@ void test_hashmap_remove_with_one_elem_makes_empty_with_cleanup() {
     hashmap_insert(&map, &str, &thing);
     hashmap_remove(&map, &str, (free_fn_t)&str_free, (free_fn_t)&something_free);
 
-    assert_false(hashmap_contains(&map, &str));
+	str_t exp;
+	str_from(&exp, lit);
+
+    assert_false(hashmap_contains(&map, &exp));
     assert_eq(map.size, 0);
     assert_eq(hashmap_load_factor(&map), 0.0);
     assert(hashmap_is_empty(&map));
 
     hashmap_free(&map, (free_fn_t)&str_free, (free_fn_t)&something_free);
+	str_free(&exp);
 
     end_test();
 }

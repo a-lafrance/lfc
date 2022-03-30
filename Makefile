@@ -3,11 +3,14 @@ INCLUDE_DIR = include
 SRC_DIR = src
 TARGET_DIR = target
 
-CC = clang # FIXME: this should really be architecture-specific
+CC = cc # NOTE: is this architecture-specific enough?
 
-BASE_CFLAGS = -g -I../include
-LFC_CFLAGS = $(BASE_CFLAGS) -c
-TESTS_CFLAGS = $(BASE_CFLAGS) -L. -llfc -o tests
+CFLAGS = -g -I../include
+LFC_CFLAGS = $(CFLAGS) -c
+TESTS_CFLAGS = $(CFLAGS) -o tests
+
+CLIBS = -lm
+TESTS_CLIBS = -L. -llfc $(CLIBS)
 
 # TODO: this needs a lot of work to be as sophisticated as it should be
 
@@ -23,16 +26,19 @@ tests: $(TARGET_DIR) liblfc.a
 	cd $(TARGET_DIR) && $(CC) $(TESTS_CFLAGS)     \
 		../$(SRC_DIR)/lfc/collections/tests/*.c   \
 		../$(SRC_DIR)/lfc/utils/tests/*.c         \
-		../$(SRC_DIR)/tests/*.c
+		../$(SRC_DIR)/tests/*.c                   \
+		$(TESTS_CLIBS)
 
 collections: $(TARGET_DIR)
 	cd $(TARGET_DIR) && $(CC) $(LFC_CFLAGS)      \
 		../$(SRC_DIR)/lfc/collections/*.c        \
-		../$(SRC_DIR)/internals/collections/*.c
+		../$(SRC_DIR)/internals/collections/*.c  \
+		$(CLIBS)
 
 utils: $(TARGET_DIR)
 	cd $(TARGET_DIR) && $(CC) $(LFC_CFLAGS)  \
-		../$(SRC_DIR)/lfc/utils/*.c
+		../$(SRC_DIR)/lfc/utils/*.c          \
+		$(CLIBS)
 
 $(TARGET_DIR):
 	mkdir -p $@
