@@ -7,7 +7,7 @@ CC = cc # NOTE: is this architecture-specific enough?
 
 BASE_CFLAGS = -g -I../include
 LFC_CFLAGS = $(BASE_CFLAGS) -c
-TESTS_CFLAGS = $(BASE_CFLAGS) -L. -llfc -o tests
+TESTS_CFLAGS = $(BASE_CFLAGS) -o tests
 
 # TODO: this needs a lot of work to be as sophisticated as it should be
 
@@ -23,7 +23,8 @@ tests: $(TARGET_DIR) liblfc.a
 	cd $(TARGET_DIR) && $(CC) $(TESTS_CFLAGS)     \
 		../$(SRC_DIR)/lfc/collections/tests/*.c   \
 		../$(SRC_DIR)/lfc/utils/tests/*.c         \
-		../$(SRC_DIR)/tests/*.c
+		../$(SRC_DIR)/tests/*.c                   \
+		-L. -llfc
 
 collections: $(TARGET_DIR)
 	cd $(TARGET_DIR) && $(CC) $(LFC_CFLAGS)      \
