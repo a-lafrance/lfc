@@ -1,22 +1,22 @@
-name: checks
+name: tests
 on: [pull_request, workflow_dispatch]
 defaults:
     run:
         shell: bash
 jobs:
-    macos-tests:
+    macos:
         runs-on: macos-latest
         steps:
             - name: Checkout repo
-            uses: actions/checkout@v2
+              uses: actions/checkout@v2
 
             - name: Build and run unit tests
-            run: make tests && ./target/tests
-    linux-tests:
+              run: make tests && ./target/tests
+    linux:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout repo
-            uses: actions/checkout@v2
+              uses: actions/checkout@v2
 
             - name: Build and run unit tests
-            run: make tests && ./target/tests
+              run: make tests && ./target/tests
