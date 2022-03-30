@@ -47,6 +47,9 @@ int ll_find(list_t* list, void* target, int (*elem_eq)(void*, void*));
 // Remove the element that equals the given target, if found
 void* ll_remove(list_t* list, void* target, int (*elem_eq)(void*, void*));
 
+// Returns the length of the list
+size_t ll_len(list_t* list);
+
 // Check whether or not the list is empty
 int ll_is_empty(list_t* list);
 
