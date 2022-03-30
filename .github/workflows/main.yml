@@ -18,5 +18,11 @@ jobs:
             - name: Checkout repo
               uses: actions/checkout@v2
 
-            - name: Build and run unit tests
-              run: make tests && ./target/tests
+            - name: Package manager setup
+              run: sudo apt-get update
+
+            - name: Install Valgrind
+              run: sudo apt install -y valgrind
+
+            - name: Build and run unit tests w/ Valgrind
+              run: make tests && ./scripts/run-tests-full.sh
