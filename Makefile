@@ -9,8 +9,8 @@ CFLAGS = -g -I../include
 LFC_CFLAGS = $(CFLAGS) -c
 TESTS_CFLAGS = $(CFLAGS) -o tests
 
-LFC_CLIBS = -lmath
-TESTS_CLIBS = -L. -llfc
+CLIBS = -lm
+TESTS_CLIBS = -L. -llfc $(CLIBS)
 
 # TODO: this needs a lot of work to be as sophisticated as it should be
 
@@ -33,12 +33,12 @@ collections: $(TARGET_DIR)
 	cd $(TARGET_DIR) && $(CC) $(LFC_CFLAGS)      \
 		../$(SRC_DIR)/lfc/collections/*.c        \
 		../$(SRC_DIR)/internals/collections/*.c  \
-		$(LFC_CLIBS)
+		$(CLIBS)
 
 utils: $(TARGET_DIR)
 	cd $(TARGET_DIR) && $(CC) $(LFC_CFLAGS)  \
 		../$(SRC_DIR)/lfc/utils/*.c          \
-		$(LFC_CLIBS)
+		$(CLIBS)
 
 $(TARGET_DIR):
 	mkdir -p $@
