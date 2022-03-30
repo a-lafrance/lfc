@@ -30,20 +30,24 @@ void str_free(str_t* str) {
     free(str->buffer);
 }
 
+void __str_expand(str_t* str, size_t capacity) {
+	str->capacity = capacity;
+	str->buffer = realloc_unwrap(str->buffer, sizeof(char), str->capacity, "[__str_expand] failed to expand string");
+}
+
 void str_push(str_t* str, char c) {
     if (str->len + 1 > str->capacity) {
-        str->capacity *= 2;
-        str->buffer = malloc_unwrap(sizeof(char), str->capacity, "[str_push] failed to expand string");
+		__str_expand(str, str->capacity * 2);
     }
 
     str->buffer[str->len] = c;
     str->len += 1;
+	// free(str->buffer);
 }
 
 void str_pushstr(str_t* str, str_t* to_push) {
     if (str->len + to_push->len > str->capacity) {
-        str->capacity = str->capacity * 2 + to_push->len;
-        str->buffer = malloc_unwrap(sizeof(char), str->capacity, "[str_pushstr] failed to expand string");
+		__str_expand(str, str->capacity * 2 + to_push->len);
     }
 
     memcpy(str->buffer + str->len, to_push->buffer, to_push->len);

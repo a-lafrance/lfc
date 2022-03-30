@@ -38,12 +38,12 @@ void test_append_and_free_single_value_no_cleanup() {
     list_t list;
     ll_init(&list);
 
-    int* value = calloc_unwrap(sizeof(int), 1, "[linkedlist_tests] unable to alloc int value");
-    ll_append(&list, value);
+    int value = 0;
+    ll_append(&list, &value);
     assert_list_not_empty(&list, 1);
 
     int* first = ll_first(&list);
-    assert_eq(*first, 0);
+    assert_eq(*first, value);
 
     ll_free(&list, NULL);
 
@@ -56,13 +56,14 @@ void test_append_and_free_single_value_with_cleanup() {
     list_t list;
     ll_init(&list);
 
-    struct something* thing = malloc_unwrap(sizeof(struct something), 1, "[linkedlist_tests] failed to alloc struct value");
-    something_init(thing, 5);
-    ll_append(&list, thing);
+    struct something thing;
+    something_init(&thing, 5);
+
+    ll_append(&list, &thing);
     assert_list_not_empty(&list, 1);
 
     struct something* first = ll_first(&list);
-    assert_eq(*first->n, *thing->n);
+    assert_eq(*first->n, *thing.n);
 
     ll_free(&list, (free_fn_t)&something_free);
 
@@ -76,12 +77,11 @@ void test_append_and_free_many_values_no_cleanup() {
     ll_init(&list);
 
     size_t len = 5;
+    int* values = malloc_unwrap(sizeof(int), len, "[linkedlist_tests] unable to alloc value buffer");
 
     for (size_t i = 0; i < len; i++) {
-        int* value = malloc_unwrap(sizeof(int), 1, "[linkedlist_tests] unable to alloc int value");
-        *value = i;
-
-        ll_append(&list, value);
+		values[i] = i;
+        ll_append(&list, values + i);
     }
 
     assert_list_not_empty(&list, len);
@@ -90,12 +90,13 @@ void test_append_and_free_many_values_no_cleanup() {
 
     for (struct __ll_node* node = list.head; node != NULL; node = node->next) {
         int* value = node->data;
-        assert_eq(*value, i);
+        assert_eq(*value, values[i]);
 
         i++;
     }
 
     ll_free(&list, NULL);
+	free(values);
 
     end_test();
 }
@@ -107,12 +108,11 @@ void test_append_and_free_many_values_with_cleanup() {
     ll_init(&list);
 
     size_t len = 5;
+    struct something* values = malloc_unwrap(sizeof(struct something), len, "[linkedlist_tests] unable to alloc value buffer");
 
     for (int i = 0; i < len; i++) {
-        struct something* value = malloc_unwrap(sizeof(struct something), 1, "[linkedlist_tests] unable to alloc struct value");
-        something_init(value, i);
-
-        ll_append(&list, value);
+        something_init(values + i, i);
+        ll_append(&list, values + i);
     }
 
     assert_list_not_empty(&list, len);
@@ -121,12 +121,13 @@ void test_append_and_free_many_values_with_cleanup() {
 
     for (struct __ll_node* node = list.head; node != NULL; node = node->next) {
         struct something* value = node->data;
-        assert_eq(*value->n, i);
+        assert_eq(*value->n, *values[i].n);
 
         i++;
     }
 
     ll_free(&list, (free_fn_t)&something_free);
+	free(values);
 
     end_test();
 }
@@ -137,12 +138,12 @@ void test_prepend_and_free_single_value_no_cleanup() {
     list_t list;
     ll_init(&list);
 
-    int* value = calloc_unwrap(sizeof(int), 1, "[linkedlist_tests] unable to alloc int value");
-    ll_prepend(&list, value);
+    int value = 0;
+    ll_prepend(&list, &value);
     assert_list_not_empty(&list, 1);
 
     int* first = ll_first(&list);
-    assert_eq(*first, 0);
+    assert_eq(*first, value);
 
     ll_free(&list, NULL);
 
@@ -155,13 +156,14 @@ void test_prepend_and_free_single_value_with_cleanup() {
     list_t list;
     ll_init(&list);
 
-    struct something* thing = malloc_unwrap(sizeof(struct something), 1, "[linkedlist_tests] failed to alloc struct value");
-    something_init(thing, 5);
-    ll_prepend(&list, thing);
+    struct something thing;
+    something_init(&thing, 5);
+
+    ll_prepend(&list, &thing);
     assert_list_not_empty(&list, 1);
 
     struct something* first = ll_first(&list);
-    assert_eq(*first->n, *thing->n);
+    assert_eq(*first->n, *thing.n);
 
     ll_free(&list, (free_fn_t)&something_free);
 
@@ -175,12 +177,11 @@ void test_prepend_and_free_many_values_no_cleanup() {
     ll_init(&list);
 
     size_t len = 5;
+	int* values = malloc_unwrap(sizeof(int), len, "[linkedlist_tests] failed to alloc value buffer");
 
     for (size_t i = 0; i < len; i++) {
-        int* value = malloc_unwrap(sizeof(int), 1, "[linkedlist_tests] unable to alloc int value");
-        *value = i;
-
-        ll_prepend(&list, value);
+		values[i] = i;
+        ll_prepend(&list, values + i);
     }
 
     assert_list_not_empty(&list, len);
@@ -189,12 +190,13 @@ void test_prepend_and_free_many_values_no_cleanup() {
 
     for (struct __ll_node* node = list.head; node != NULL; node = node->next) {
         int* value = node->data;
-        assert_eq(*value, i);
+        assert_eq(*value, values[i]);
 
         i--;
     }
 
     ll_free(&list, NULL);
+	free(values);
 
     end_test();
 }
@@ -206,12 +208,11 @@ void test_prepend_and_free_many_values_with_cleanup() {
     ll_init(&list);
 
     size_t len = 5;
+    struct something* values = malloc_unwrap(sizeof(struct something), len, "[linkedlist_tests] unable to alloc value buffer");
 
     for (int i = 0; i < len; i++) {
-        struct something* value = malloc_unwrap(sizeof(struct something), 1, "[linkedlist_tests] unable to alloc struct value");
-        something_init(value, i);
-
-        ll_prepend(&list, value);
+        something_init(values + i, i);
+        ll_prepend(&list, values + i);
     }
 
     assert_list_not_empty(&list, len);
@@ -220,12 +221,13 @@ void test_prepend_and_free_many_values_with_cleanup() {
 
     for (struct __ll_node* node = list.head; node != NULL; node = node->next) {
         struct something* value = node->data;
-        assert_eq(*value->n, i);
+        assert_eq(*value->n, *values[i].n);
 
         i--;
     }
 
     ll_free(&list, (free_fn_t)&something_free);
+	free(values);
 
     end_test();
 }
@@ -250,10 +252,10 @@ void test_front_pop_from_single_element() {
     list_t list;
     ll_init(&list);
 
-    int* value = calloc_unwrap(sizeof(int), 1, "[linkedlist_tests] failed to alloc int value");
-    ll_append(&list, value);
+    int value = 0;
+    ll_append(&list, &value);
 
-    assert_eq(*(int*)ll_pop_first(&list), *value);
+    assert_eq(*(int*)ll_pop_first(&list), value);
     assert_list_is_empty(&list);
 
     ll_free(&list, NULL);
@@ -268,18 +270,18 @@ void test_front_pop_from_many_elements() {
     ll_init(&list);
 
     int len = 5;
+	int* values = malloc_unwrap(sizeof(int), len, "[linkedlist_tests] failed to alloc value buffer");
 
     for (int i = 0; i < len; i++) {
-        int* value = malloc_unwrap(sizeof(int), 1, "[linkedlist_tests] failed to alloc int value");
-        *value = i;
-
-        ll_prepend(&list, value);
+		values[i] = i;
+        ll_prepend(&list, values + i);
     }
 
-    assert_eq(*(int*)ll_pop_first(&list), len - 1);
+    assert_eq(*(int*)ll_pop_first(&list), values[len - 1]);
     assert_list_not_empty(&list, len - 1);
 
     ll_free(&list, NULL);
+	free(values);
 
     end_test();
 }
@@ -305,18 +307,18 @@ void test_find_when_present() {
     ll_init(&list);
 
     int len = 5;
+	int* values = malloc_unwrap(sizeof(int), len, "[linkedlist_tests] failed to alloc value buffer");
 
     for (int i = 0; i < len; i++) {
-        int* value = malloc_unwrap(sizeof(int), 1, "[linkedlist_tests] failed to alloc int value");
-        *value = i;
-
-        ll_append(&list, value);
+		values[i] = i;
+        ll_append(&list, values + i);
     }
 
     int target = len / 2;
     assert_eq(ll_find(&list, &target, &int_eq), 1);
 
     ll_free(&list, NULL);
+	free(values);
 
     end_test();
 }
@@ -328,25 +330,21 @@ void test_find_when_not_present() {
     ll_init(&list);
 
     int len = 5;
+    int* values = malloc_unwrap(sizeof(int), len, "[linkedlist_tests] failed to alloc value buffer");
 
     for (int i = 0; i < len; i++) {
-        int* value = malloc_unwrap(sizeof(int), 1, "[linkedlist_tests] failed to alloc int value");
-        *value = i;
-
-        ll_append(&list, value);
+		values[i] = i;
+        ll_append(&list, values + i);
     }
 
     assert_eq(ll_find(&list, &len, &int_eq), 0);
 
     ll_free(&list, NULL);
+	free(values);
 
     end_test();
 }
 
-// remove:
-    // non-empty list containing target
-    // non-empty list not containing target
-    // empty list
 void test_remove_in_empty_list() {
     start_test();
 
@@ -369,12 +367,11 @@ void test_remove_when_present() {
     ll_init(&list);
 
     int len = 5;
+    int* values = malloc_unwrap(sizeof(int), len, "[linkedlist_tests] failed to alloc value buffer");
 
     for (int i = 0; i < len; i++) {
-        int* value = malloc_unwrap(sizeof(int), 1, "[linkedlist_tests] failed to alloc int value");
-        *value = i;
-
-        ll_append(&list, value);
+		values[i] = i;
+        ll_append(&list, values + i);
     }
 
     int target = len / 2;
@@ -384,8 +381,8 @@ void test_remove_when_present() {
     assert_eq(*removed, target);
     assert_list_not_empty(&list, len - 1);
 
-    free(removed);
     ll_free(&list, NULL);
+	free(values);
 
     end_test();
 }
@@ -397,18 +394,18 @@ void test_remove_when_not_present() {
     ll_init(&list);
 
     int len = 5;
+    int* values = malloc_unwrap(sizeof(int), len, "[linkedlist_tests] failed to alloc value buffer");
 
     for (int i = 0; i < len; i++) {
-        int* value = malloc_unwrap(sizeof(int), 1, "[linkedlist_tests] failed to alloc int value");
-        *value = i;
-
-        ll_append(&list, value);
+		values[i] = i;
+        ll_append(&list, values + i);
     }
 
     assert_eq(ll_remove(&list, &len, &int_eq), NULL);
     assert_list_not_empty(&list, len);
 
     ll_free(&list, NULL);
+	free(values);
 
     end_test();
 }
@@ -419,25 +416,20 @@ void test_remove_creating_empty_list() {
     list_t list;
     ll_init(&list);
 
-    int* value = calloc_unwrap(sizeof(int), 1, "[linkedlist_tests] failed to alloc int value");
-    ll_append(&list, value);
+    int value = 0;
+    ll_append(&list, &value);
 
-    int* removed = ll_remove(&list, value, &int_eq);
+    int* removed = ll_remove(&list, &value, &int_eq);
 
     assert_ne(removed, NULL);
-    assert_eq(*value, *removed);
+    assert_eq(value, *removed);
     assert_list_is_empty(&list);
 
-    free(removed);
     ll_free(&list, NULL);
 
     end_test();
 }
 
-// empty:
-    // empty list
-    // one element list
-    // many element list
 void test_empty_list_is_empty() {
     start_test();
 
@@ -456,8 +448,8 @@ void test_one_elem_list_not_empty() {
     list_t list;
     ll_init(&list);
 
-    int* value = calloc_unwrap(sizeof(int), 1, "[linkedlist_tests] failed to alloc int value");
-    ll_append(&list, value);
+    int value = 0;
+    ll_append(&list, &value);
     assert_false(ll_is_empty(&list));
 
     ll_free(&list, NULL);
@@ -472,17 +464,17 @@ void test_many_elem_list_not_empty() {
     ll_init(&list);
 
     int len = 5;
+    int* values = malloc_unwrap(sizeof(int), len, "[linkedlist_tests] failed to alloc value buffer");
 
     for (int i = 0; i < len; i++) {
-        int* value = malloc_unwrap(sizeof(int), 1, "[linkedlist_tests] failed to alloc int value");
-        *value = i;
-
-        ll_append(&list, value);
+		values[i] = i;
+        ll_append(&list, values + i);
     }
 
     assert_false(ll_is_empty(&list));
 
     ll_free(&list, NULL);
+	free(values);
 
     end_test();
 }

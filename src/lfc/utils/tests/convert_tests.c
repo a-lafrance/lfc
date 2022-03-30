@@ -19,6 +19,10 @@ void itoa_test_body(int32_t n, char* exp_lit) {
 
     str_t result_str = itos(n);
     assert(str_eq(&exp_str, &result_str));
+
+	str_free(&exp_str);
+	str_free(&result_str);
+	free(result_buf);
 }
 
 void test_itoa_zero_converted_correctly() {
