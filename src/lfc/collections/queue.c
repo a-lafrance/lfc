@@ -19,7 +19,7 @@ void* queue_pop(queue_t* q) {
 }
 
 void* queue_peek(queue_t* q) {
-    return ll_last(&q->base);
+    return ll_first(&q->base);
 }
 
 size_t queue_len(queue_t* q) {

@@ -5,7 +5,9 @@
 void run_array_tests();
 void run_linkedlist_tests();
 void run_map_tests();
+void run_queue_tests();
 void run_set_tests();
+void run_stack_tests();
 void run_str_tests();
 void run_vector_tests();
 
@@ -20,7 +22,9 @@ int main(int argc, char** argv) {
         run_array_tests();
         run_linkedlist_tests();
         run_map_tests();
+        run_queue_tests();
         run_set_tests();
+        run_stack_tests();
         run_str_tests();
         run_vector_tests();
 
@@ -40,8 +44,12 @@ int main(int argc, char** argv) {
                 run_linkedlist_tests();
             } else if (strcmp(suite, "map") == 0) {
                 run_map_tests();
+            } else if (strcmp(suite, "queue") == 0) {
+                run_queue_tests();
             } else if (strcmp(suite, "set") == 0) {
                 run_set_tests();
+            } else if (strcmp(suite, "stack") == 0) {
+                run_stack_tests();
             } else if (strcmp(suite, "str") == 0) {
                 run_str_tests();
             } else if (strcmp(suite, "vector") == 0) {
