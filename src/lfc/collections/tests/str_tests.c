@@ -55,7 +55,7 @@ void test_str_pushed_chars_correctly() {
         str_push(&str, c);
 
         assert_eq(str.len, i + 1);
-        assert_eq(str.capacity, i > STR_DEFAULT_CAPACITY ? 2 * STR_DEFAULT_CAPACITY : STR_DEFAULT_CAPACITY);
+        assert_eq(str.capacity, i == STR_DEFAULT_CAPACITY ? 2 * STR_DEFAULT_CAPACITY : STR_DEFAULT_CAPACITY);
         assert_false(str_is_empty(&str));
         assert_eq(str_get(&str, i), c);
     }
