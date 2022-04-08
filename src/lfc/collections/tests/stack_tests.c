@@ -43,7 +43,6 @@ void test_stack_push_pop_on_empty() {
 
     end_test();
 }
-#include <stdio.h>
 
 void test_stack_push_pop_many() {
     start_test();

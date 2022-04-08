@@ -11,13 +11,13 @@ if (!(condition)) {                                \
 #define assert(condition) assert_or(condition, #condition)
 #define assert_false(condition) assert_or(!(condition), #condition "is true, but should be false")
 
-#define assert_eq(lhs, rhs) assert(lhs == rhs)
-#define assert_ne(lhs, rhs) assert(lhs != rhs)
+#define assert_eq(lhs, rhs) assert((lhs) == (rhs))
+#define assert_ne(lhs, rhs) assert((lhs) != (rhs))
 
-#define assert_gt(lhs, rhs) assert(lhs > rhs)
-#define assert_lt(lhs, rhs) assert(lhs < rhs)
+#define assert_gt(lhs, rhs) assert((lhs) > (rhs))
+#define assert_lt(lhs, rhs) assert((lhs) < (rhs))
 
-#define assert_ge(lhs, rhs) assert(lhs >= rhs)
-#define assert_le(lhs, rhs) assert(lhs <= rhs)
+#define assert_ge(lhs, rhs) assert((lhs) >= (rhs))
+#define assert_le(lhs, rhs) assert((lhs) <= (rhs))
 
 #endif
